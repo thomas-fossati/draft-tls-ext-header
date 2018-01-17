@@ -60,8 +60,15 @@ Length Redefined
 
 The proposal here is to shorten the length field to 14 bits and:
 
-- Use the top bit to signify the presence / absence of an extension header;
-- Reserve the other bit for future use.
+- Use the top bit (E) to signify the presence / absence of an extension header;
+- Reserve the other bit (R) for future use.
+
+~~~
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|E|R|          Length           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~
 
 In the reminder, the top bit is called the "extension header indicator".
 
@@ -79,9 +86,9 @@ Format {#ext-header-format}
 If the extension header indicator is asserted, then an extension header is appended to the regular header with the following format:
 
 ~~~
-+-+-+-+-+-+-+-+------------+------------
-|M|   Type    | Length ... | Value ... |
-+-+-+-+-+-+-+-+------------+-----------+
++-+-+-+-+-+-+-+-+------------+------------
+|M|   Type      | Length ... | Value ... |
++-+-+-+-+-+-+-+-+------------+-----------+
 ~~~
 
 where:
