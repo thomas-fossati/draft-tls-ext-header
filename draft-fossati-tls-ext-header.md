@@ -110,7 +110,7 @@ A legacy endpoint that receives an extension header will interpret it as an inva
 Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated extension header.
 
 Use with Connection ID {#ext-header-and-cid}
-======================
+----------------------
 
 A plausible use of this mechanism is in relation with the CID extension defined in {{I-D.ietf-tls-dtls-connection-id}}.
 
