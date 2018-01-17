@@ -305,8 +305,8 @@ address {
   <meta name="dct.creator" content="Fossati, T. and N. Mavrogiannopoulos" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-fossati-tls-ext-header-latest" />
   <meta name="dct.issued" scheme="ISO8601" content="2018-1-17" />
-  <meta name="dct.abstract" content="TODO" />
-  <meta name="description" content="TODO" />
+  <meta name="dct.abstract" content="This document proposes a mechanism to add extension headers to TLS and DTLS." />
+  <meta name="description" content="This document proposes a mechanism to add extension headers to TLS and DTLS." />
 
 </head>
 
@@ -346,7 +346,8 @@ address {
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>TODO</p>
+<p>This document proposes a mechanism to add extension headers to TLS and DTLS.</p>
+<p>In the process, it changes the (D)TLS header in the following way: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -430,7 +431,7 @@ address {
   <li>Length: 1-byte unsigned int</li>
   <li>Value: the CID itself</li>
 </ul>
-<p id="rfc.section.4.1.p.4">There is a 2-bytes overhead per record.</p>
+<p id="rfc.section.4.1.p.4">Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc xtension header provides a cleaner approach that can be used with any TLS version at a reasonable cost (2 bytes per record).</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p/>
 
