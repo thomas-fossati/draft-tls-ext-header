@@ -65,6 +65,11 @@ The proposal here is to shorten the length field to 14 bits and:
 
 In the reminder, the top bit is called the "extension header indicator".
 
+Reserved Bit Considerations
+===========================
+
+The reserved bit MUST NOT be set by a sender.
+
 Extension Header
 =======================
 
@@ -95,6 +100,8 @@ An endpoint MUST NOT send an extension header if it hasn't been successfully neg
 
 An endpoint that receives an unexpected extension header MUST abort the session.
 
+Extension headers MUST NOT be sent during the initial handshake phase.
+
 Backwards Compatibility {#ext-header-backwards-compat}
 =======================
 
@@ -102,8 +109,8 @@ A legacy endpoint that receives an extension header will interpret it as an inva
 
 Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated extension header.
 
-Example
--------
+Use with Connection ID {#ext-header-and-cid}
+======================
 
 A plausible use of this mechanism is in relation with the CID extension defined in {{I-D.ietf-tls-dtls-connection-id}}.
 
