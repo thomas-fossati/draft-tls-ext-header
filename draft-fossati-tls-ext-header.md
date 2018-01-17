@@ -42,7 +42,9 @@ entity:
 
 --- abstract
 
-TODO
+This document proposes a mechanism to add extension headers to TLS and DTLS.
+
+In the process, it changes the (D)TLS header in the following way: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.
 
 --- middle
 
@@ -113,7 +115,7 @@ In such case, the companion extension header might be defined as follows:
 - Length: 1-byte unsigned int
 - Value: the CID itself
 
-There is a 2-bytes overhead per record.
+Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc xtension header provides a cleaner approach that can be used with any TLS version at a reasonable cost (2 bytes per record).
 
 Security Considerations
 =======================
