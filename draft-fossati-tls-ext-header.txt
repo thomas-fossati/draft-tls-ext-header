@@ -70,15 +70,15 @@ Table of Contents
    4.  Extension Header  . . . . . . . . . . . . . . . . . . . . . .   3
      4.1.  Format  . . . . . . . . . . . . . . . . . . . . . . . . .   3
      4.2.  Negotiation . . . . . . . . . . . . . . . . . . . . . . .   3
-   5.  Backwards Compatibility . . . . . . . . . . . . . . . . . . .   3
-   6.  Use with Connection ID  . . . . . . . . . . . . . . . . . . .   4
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   8.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   4
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .   5
-     11.2.  Informative References . . . . . . . . . . . . . . . . .   5
+     4.3.  Backwards Compatibility . . . . . . . . . . . . . . . . .   3
+   5.  Use with Connection ID  . . . . . . . . . . . . . . . . . . .   4
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   4
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   5
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   5
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
 
 1.  Introduction
@@ -157,7 +157,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
    Extension headers MUST NOT be sent during the initial handshake
    phase.
 
-5.  Backwards Compatibility
+4.3.  Backwards Compatibility
 
    A legacy endpoint that receives an extension header will interpret it
    as an invalid length field [RFC5246] and abort the session
@@ -174,7 +174,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
    implementing this spec which receives a non-negotiated extension
    header.
 
-6.  Use with Connection ID
+5.  Use with Connection ID
 
    A plausible use of this mechanism is in relation with the CID
    extension defined in [I-D.ietf-tls-dtls-connection-id].
@@ -195,23 +195,23 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
    cleaner approach that can be used with any TLS version at a
    reasonable cost (2 bytes per record).
 
-7.  Security Considerations
+6.  Security Considerations
 
    o  TODO discuss on-path active attacker - trying to modify an
       existing extension header or insert a new one
 
-8.  Privacy Considerations
+7.  Privacy Considerations
 
    o  TODO discuss metadata insertion - privacy implications must be
       discussed on a per extension basis
 
-9.  IANA Considerations
+8.  IANA Considerations
 
    This document defines a new IANA registry that, for each extension
    header, shall define: - the Type codepoint; - the Length size in
    bytes.
 
-10.  Acknowledgements
+9.  Acknowledgements
 
    TODO
 
@@ -226,9 +226,9 @@ Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 4]
 Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
 
-11.  References
+10.  References
 
-11.1.  Normative References
+10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -245,7 +245,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
               DOI 10.17487/RFC6066, January 2011, <https://www.rfc-
               editor.org/info/rfc6066>.
 
-11.2.  Informative References
+10.2.  Informative References
 
    [I-D.ietf-tls-dtls-connection-id]
               Rescorla, E., Tschofenig, H., Fossati, T., and T. Gondrom,
