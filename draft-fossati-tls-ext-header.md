@@ -103,7 +103,7 @@ An endpoint that receives an unexpected extension header MUST abort the session.
 Extension headers MUST NOT be sent during the initial handshake phase.
 
 Backwards Compatibility {#ext-header-backwards-compat}
-=======================
+-----------------------
 
 A legacy endpoint that receives an extension header will interpret it as an invalid length field {{RFC5246}} and abort the session accordingly.
 
