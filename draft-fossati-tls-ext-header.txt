@@ -75,7 +75,7 @@ Table of Contents
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
    6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   4
+   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
      9.2.  Informative References  . . . . . . . . . . . . . . . . .   5
@@ -208,12 +208,12 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
 7.  IANA Considerations
 
    This document defines a new IANA registry that, for each extension
-   header, shall define: - the Type codepoint; - the Length size in
-   bytes.
+   header, shall define:
 
-8.  Acknowledgements
+   o  the Type codepoint;
 
-   TODO
+   o  the Length size in bytes.
+
 
 
 
@@ -225,6 +225,10 @@ Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 4]
 
 Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
+
+8.  Acknowledgements
+
+   TODO
 
 9.  References
 
@@ -265,10 +269,6 @@ Authors' Addresses
    RedHat
 
    Email: nmav@redhat.com
-
-
-
-
 
 
 
