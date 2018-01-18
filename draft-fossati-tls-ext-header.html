@@ -284,19 +284,18 @@ address {
   <link href="#rfc.toc" rel="Contents"/>
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
 <link href="#rfc.section.2" rel="Chapter" title="2 Length Redefined"/>
-<link href="#rfc.section.3" rel="Chapter" title="3 Reserved Bit Considerations"/>
-<link href="#rfc.section.4" rel="Chapter" title="4 Extension Header"/>
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Format"/>
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Negotiation"/>
-<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Backwards Compatibility"/>
-<link href="#rfc.section.4.4" rel="Chapter" title="4.4 Use with Connection ID"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 Privacy Considerations"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations"/>
-<link href="#rfc.section.8" rel="Chapter" title="8 Acknowledgements"/>
-<link href="#rfc.references" rel="Chapter" title="9 References"/>
-<link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References"/>
-<link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Extension Header"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Format"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Negotiation"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Backwards Compatibility"/>
+<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Use with Connection ID"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Security Considerations"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Privacy Considerations"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Acknowledgements"/>
+<link href="#rfc.references" rel="Chapter" title="8 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -306,8 +305,8 @@ address {
   <meta name="dct.creator" content="Fossati, T. and N. Mavrogiannopoulos" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-fossati-tls-ext-header-latest" />
   <meta name="dct.issued" scheme="ISO8601" content="2018-1-17" />
-  <meta name="dct.abstract" content="This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the &quot;extension header indicator&quot; semantics, the other bit is reserved for future use." />
-  <meta name="description" content="This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the &quot;extension header indicator&quot; semantics, the other bit is reserved for future use." />
+  <meta name="dct.abstract" content="This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;extension header indicator&quot; semantics." />
+  <meta name="description" content="This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;extension header indicator&quot; semantics." />
 
 </head>
 
@@ -347,7 +346,7 @@ address {
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.</p>
+<p>This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "extension header indicator" semantics.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -368,19 +367,18 @@ address {
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
 <li>2.   <a href="#rfc.section.2">Length Redefined</a></li>
-<li>3.   <a href="#rfc.section.3">Reserved Bit Considerations</a></li>
-<li>4.   <a href="#rfc.section.4">Extension Header</a></li>
-<ul><li>4.1.   <a href="#rfc.section.4.1">Format</a></li>
-<li>4.2.   <a href="#rfc.section.4.2">Negotiation</a></li>
-<li>4.3.   <a href="#rfc.section.4.3">Backwards Compatibility</a></li>
-<li>4.4.   <a href="#rfc.section.4.4">Use with Connection ID</a></li>
-</ul><li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
-<li>6.   <a href="#rfc.section.6">Privacy Considerations</a></li>
-<li>7.   <a href="#rfc.section.7">IANA Considerations</a></li>
-<li>8.   <a href="#rfc.section.8">Acknowledgements</a></li>
-<li>9.   <a href="#rfc.references">References</a></li>
-<ul><li>9.1.   <a href="#rfc.references.1">Normative References</a></li>
-<li>9.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>3.   <a href="#rfc.section.3">Extension Header</a></li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Format</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Negotiation</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Backwards Compatibility</a></li>
+<li>3.4.   <a href="#rfc.section.3.4">Use with Connection ID</a></li>
+</ul><li>4.   <a href="#rfc.section.4">Security Considerations</a></li>
+<li>5.   <a href="#rfc.section.5">Privacy Considerations</a></li>
+<li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
+<li>7.   <a href="#rfc.section.7">Acknowledgements</a></li>
+<li>8.   <a href="#rfc.references">References</a></li>
+<ul><li>8.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>8.2.   <a href="#rfc.references.2">Informative References</a></li>
 </ul><li><a href="#rfc.authors">Authors' Addresses</a></li>
 
 
@@ -389,13 +387,12 @@ address {
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
 <p id="rfc.section.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#length-redefined" id="length-redefined">Length Redefined</a></h1>
-<p><a href="#RFC5246">[RFC5246]</a> requires the size of TLS record payloads to not exceed 2^14, which means that the two top level bits in the length field of the TLS record header are unused.</p>
-<p id="rfc.section.2.p.2">The proposal (<a href="#fig-length-redefined">Figure 1</a>) here is to shorten the length field to 14 bits and:</p>
+<p><a href="#RFC5246">[RFC5246]</a> requires the size of TLS record payloads to not exceed 2^14, which means that the first bit in the length field of the TLS record header is unused.</p>
+<p id="rfc.section.2.p.2">The proposal (<a href="#fig-length-redefined">Figure 1</a>) here is to shorten the length field to 15 bits and:</p>
 <p/>
 
 <ul>
   <li>Use the top bit (E) to signify the presence / absence of an extension header;</li>
-  <li>Reserve the other bit (R) for future use.</li>
 </ul>
 <div id="rfc.figure.1"/>
 <div id="fig-length-redefined"/>
@@ -404,7 +401,7 @@ address {
 +-+-+-+-+-+-+-+-+
 |  ContentType  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|            Version            |E|R|          Length           |
+|            Version            |E|            Length           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~                (optional) Extension header(s)                 ~
 +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
@@ -414,17 +411,15 @@ address {
 <p class="figure">Figure 1: Length redefined</p>
 <p id="rfc.section.2.p.4">Length includes any extension header that is included in this record.</p>
 <p id="rfc.section.2.p.5">(In the reminder, the top bit is called the "extension header indicator".)</p>
-<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#reserved-bit-considerations" id="reserved-bit-considerations">Reserved Bit Considerations</a></h1>
-<p id="rfc.section.3.p.1">The reserved bit MUST NOT be set by a sender.</p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#extension-header" id="extension-header">Extension Header</a></h1>
-<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#ext-header-format" id="ext-header-format">Format</a></h1>
-<p id="rfc.section.4.1.p.1">If the extension header indicator is asserted, then an extension header is appended to the regular header with the following format:</p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#extension-header" id="extension-header">Extension Header</a></h1>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#ext-header-format" id="ext-header-format">Format</a></h1>
+<p id="rfc.section.3.1.p.1">If the extension header indicator is asserted, then an extension header is appended to the regular header with the following format:</p>
 <pre>
 +-+-+-+-+-+-+-+-+------------+------------
 |M|   Type      | Length ... | Value ... |
 +-+-+-+-+-+-+-+-+------------+-----------+
 </pre>
-<p id="rfc.section.4.1.p.2">where:</p>
+<p id="rfc.section.3.1.p.2">where:</p>
 <p/>
 
 <ul>
@@ -433,17 +428,17 @@ address {
   <li>Length is the length of Value in bytes.  Every extension header defines the size of its Length field as the minimal amount of bytes needed to encode the length of any legit Value for this Type;</li>
   <li>Value is the extension itself.</li>
 </ul>
-<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#ext-header-nego" id="ext-header-nego">Negotiation</a></h1>
-<p id="rfc.section.4.2.p.1">An extension header is allowed only if it has been negotiated via a companion TLS extension.</p>
-<p id="rfc.section.4.2.p.2">An endpoint MUST NOT send an extension header if it hasn't been successfully negotiated with the receiver.</p>
-<p id="rfc.section.4.2.p.3">An endpoint that receives an unexpected extension header MUST abort the session.</p>
-<p id="rfc.section.4.2.p.4">Extension headers MUST NOT be sent during the initial handshake phase.</p>
-<h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> <a href="#ext-header-backwards-compat" id="ext-header-backwards-compat">Backwards Compatibility</a></h1>
-<p id="rfc.section.4.3.p.1">A legacy endpoint that receives an extension header will interpret it as an invalid length field <a href="#RFC5246">[RFC5246]</a> and abort the session accordingly.</p>
-<p id="rfc.section.4.3.p.2">Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated extension header.</p>
-<h1 id="rfc.section.4.4"><a href="#rfc.section.4.4">4.4.</a> <a href="#ext-header-and-cid" id="ext-header-and-cid">Use with Connection ID</a></h1>
-<p id="rfc.section.4.4.p.1">A plausible use of this mechanism is in relation with the CID extension defined in <a href="#I-D.ietf-tls-dtls-connection-id">[I-D.ietf-tls-dtls-connection-id]</a>.</p>
-<p id="rfc.section.4.4.p.2">In such case, the companion extension header might be defined as follows:</p>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#ext-header-nego" id="ext-header-nego">Negotiation</a></h1>
+<p id="rfc.section.3.2.p.1">An extension header is allowed only if it has been negotiated via a companion TLS extension.</p>
+<p id="rfc.section.3.2.p.2">An endpoint MUST NOT send an extension header if it hasn't been successfully negotiated with the receiver.</p>
+<p id="rfc.section.3.2.p.3">An endpoint that receives an unexpected extension header MUST abort the session.</p>
+<p id="rfc.section.3.2.p.4">Extension headers MUST NOT be sent during the initial handshake phase.</p>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#ext-header-backwards-compat" id="ext-header-backwards-compat">Backwards Compatibility</a></h1>
+<p id="rfc.section.3.3.p.1">A legacy endpoint that receives an extension header will interpret it as an invalid length field <a href="#RFC5246">[RFC5246]</a> and abort the session accordingly.</p>
+<p id="rfc.section.3.3.p.2">Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated extension header.</p>
+<h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> <a href="#ext-header-and-cid" id="ext-header-and-cid">Use with Connection ID</a></h1>
+<p id="rfc.section.3.4.p.1">A plausible use of this mechanism is in relation with the CID extension defined in <a href="#I-D.ietf-tls-dtls-connection-id">[I-D.ietf-tls-dtls-connection-id]</a>.</p>
+<p id="rfc.section.3.4.p.2">In such case, the companion extension header might be defined as follows:</p>
 <p/>
 
 <ul>
@@ -451,31 +446,31 @@ address {
   <li>Length: 1-byte unsigned int</li>
   <li>Value: the CID itself</li>
 </ul>
-<p id="rfc.section.4.4.p.4">Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc extension header provides a cleaner approach that can be used with any TLS version at a reasonable cost (2 bytes per record).</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<p id="rfc.section.3.4.p.4">Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc extension header provides a cleaner approach that can be used with any TLS version at a reasonable cost (2 bytes per record).</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p/>
 
 <ul>
   <li>TODO discuss on-path active attacker - trying to modify an existing extension header or insert a new one</li>
 </ul>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#privacy-considerations" id="privacy-considerations">Privacy Considerations</a></h1>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#privacy-considerations" id="privacy-considerations">Privacy Considerations</a></h1>
 <p/>
 
 <ul>
   <li>TODO discuss metadata insertion - privacy implications must be discussed on a per extension basis</li>
 </ul>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
-<p id="rfc.section.7.p.1">This document defines a new IANA registry that, for each extension header, shall provide:</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
+<p id="rfc.section.6.p.1">This document defines a new IANA registry that, for each extension header, shall provide:</p>
 <p/>
 
 <ul>
   <li>the Type codepoint;</li>
   <li>the Length size in bytes.</li>
 </ul>
-<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a></h1>
-<p id="rfc.section.8.p.1">TODO</p>
-<h1 id="rfc.references"><a href="#rfc.references">9.</a> References</h1>
-<h1 id="rfc.references.1"><a href="#rfc.references.1">9.1.</a> Normative References</h1>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a></h1>
+<p id="rfc.section.7.p.1">TODO</p>
+<h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -498,7 +493,7 @@ address {
     </tr>
   </tbody>
 </table>
-<h1 id="rfc.references.2"><a href="#rfc.references.2">9.2.</a> Informative References</h1>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">8.2.</a> Informative References</h1>
 <table>
   <tbody>
     <tr>

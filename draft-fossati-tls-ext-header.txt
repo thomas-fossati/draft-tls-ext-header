@@ -16,9 +16,8 @@ Abstract
 
    This document proposes a mechanism to add extension headers to TLS
    and DTLS.  To that aim, the (D)TLS header is modified as follows: the
-   length field is trimmed to 14 bits, the length's top bit is given the
-   "extension header indicator" semantics, the other bit is reserved for
-   future use.
+   length field is trimmed to 15 bits, and the length's top bit is given
+   the "extension header indicator" semantics.
 
 Status of This Memo
 
@@ -49,7 +48,8 @@ Copyright Notice
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
-
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
 
 
 
@@ -58,27 +58,23 @@ Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 1]
 Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
 
-   the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
-
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Length Redefined  . . . . . . . . . . . . . . . . . . . . . .   2
-   3.  Reserved Bit Considerations . . . . . . . . . . . . . . . . .   3
-   4.  Extension Header  . . . . . . . . . . . . . . . . . . . . . .   3
-     4.1.  Format  . . . . . . . . . . . . . . . . . . . . . . . . .   3
-     4.2.  Negotiation . . . . . . . . . . . . . . . . . . . . . . .   4
-     4.3.  Backwards Compatibility . . . . . . . . . . . . . . . . .   4
-     4.4.  Use with Connection ID  . . . . . . . . . . . . . . . . .   4
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   5
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .   5
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+   3.  Extension Header  . . . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Format  . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.2.  Negotiation . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.3.  Backwards Compatibility . . . . . . . . . . . . . . . . .   4
+     3.4.  Use with Connection ID  . . . . . . . . . . . . . . . . .   4
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   5
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
 
 1.  Introduction
 
@@ -89,36 +85,20 @@ Table of Contents
 2.  Length Redefined
 
    [RFC5246] requires the size of TLS record payloads to not exceed
-   2^14, which means that the two top level bits in the length field of
-   the TLS record header are unused.
+   2^14, which means that the first bit in the length field of the TLS
+   record header is unused.
 
-   The proposal (Figure 1) here is to shorten the length field to 14
+   The proposal (Figure 1) here is to shorten the length field to 15
    bits and:
 
    o  Use the top bit (E) to signify the presence / absence of an
       extension header;
 
-   o  Reserve the other bit (R) for future use.
-
-
-
-
-
-
-
-
-
-
-Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 2]
-
-Internet-Draft      Extension Header for TLS and DTLS       January 2018
-
-
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
    +-+-+-+-+-+-+-+-+
    |  ContentType  |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |            Version            |E|R|          Length           |
+   |            Version            |E|            Length           |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    ~                (optional) Extension header(s)                 ~
    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
@@ -127,18 +107,21 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
                         Figure 1: Length redefined
 
+
+
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 2]
+
+Internet-Draft      Extension Header for TLS and DTLS       January 2018
+
+
    Length includes any extension header that is included in this record.
 
    (In the reminder, the top bit is called the "extension header
    indicator".)
 
-3.  Reserved Bit Considerations
+3.  Extension Header
 
-   The reserved bit MUST NOT be set by a sender.
-
-4.  Extension Header
-
-4.1.  Format
+3.1.  Format
 
    If the extension header indicator is asserted, then an extension
    header is appended to the regular header with the following format:
@@ -163,14 +146,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
    o  Value is the extension itself.
 
-
-
-Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 3]
-
-Internet-Draft      Extension Header for TLS and DTLS       January 2018
-
-
-4.2.  Negotiation
+3.2.  Negotiation
 
    An extension header is allowed only if it has been negotiated via a
    companion TLS extension.
@@ -184,7 +160,17 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
    Extension headers MUST NOT be sent during the initial handshake
    phase.
 
-4.3.  Backwards Compatibility
+
+
+
+
+
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 3]
+
+Internet-Draft      Extension Header for TLS and DTLS       January 2018
+
+
+3.3.  Backwards Compatibility
 
    A legacy endpoint that receives an extension header will interpret it
    as an invalid length field [RFC5246] and abort the session
@@ -194,7 +180,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
    implementing this spec which receives a non-negotiated extension
    header.
 
-4.4.  Use with Connection ID
+3.4.  Use with Connection ID
 
    A plausible use of this mechanism is in relation with the CID
    extension defined in [I-D.ietf-tls-dtls-connection-id].
@@ -215,8 +201,22 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
    cleaner approach that can be used with any TLS version at a
    reasonable cost (2 bytes per record).
 
+4.  Security Considerations
 
+   o  TODO discuss on-path active attacker - trying to modify an
+      existing extension header or insert a new one
 
+5.  Privacy Considerations
+
+   o  TODO discuss metadata insertion - privacy implications must be
+      discussed on a per extension basis
+
+6.  IANA Considerations
+
+   This document defines a new IANA registry that, for each extension
+   header, shall provide:
+
+   o  the Type codepoint;
 
 
 
@@ -226,32 +226,15 @@ Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 4]
 Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
 
-5.  Security Considerations
-
-   o  TODO discuss on-path active attacker - trying to modify an
-      existing extension header or insert a new one
-
-6.  Privacy Considerations
-
-   o  TODO discuss metadata insertion - privacy implications must be
-      discussed on a per extension basis
-
-7.  IANA Considerations
-
-   This document defines a new IANA registry that, for each extension
-   header, shall provide:
-
-   o  the Type codepoint;
-
    o  the Length size in bytes.
 
-8.  Acknowledgements
+7.  Acknowledgements
 
    TODO
 
-9.  References
+8.  References
 
-9.1.  Normative References
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -268,19 +251,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
               DOI 10.17487/RFC6066, January 2011, <https://www.rfc-
               editor.org/info/rfc6066>.
 
-9.2.  Informative References
-
-
-
-
-
-
-
-
-Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 5]
-
-Internet-Draft      Extension Header for TLS and DTLS       January 2018
-
+8.2.  Informative References
 
    [I-D.ietf-tls-dtls-connection-id]
               Rescorla, E., Tschofenig, H., Fossati, T., and T. Gondrom,
@@ -306,31 +277,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 6]
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 5]
