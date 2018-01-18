@@ -93,9 +93,9 @@ If the extension header indicator is asserted, then an extension header is appen
 
 where:
 
-- M has the same semantic as the extension header indicator in the regular header - i.e.: if it is asserted, another extension header follows this one;
+- M has the same semantics as the extension header indicator in the regular header - i.e.: if it is asserted, another extension header follows this one;
 - Type is a fixed length (7-bits) field that defines the way Value has to be interpreted;
-- Length is the minimal amount of bytes needed to encode the length of a legit Value for this Type;
+- Length is the minimal amount of bytes needed to encode the length of any legit Value for this Type;
 - Value is the extension itself.
 
 Negotiation {#ext-header-nego}
