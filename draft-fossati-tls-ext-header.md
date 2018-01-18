@@ -149,7 +149,7 @@ Privacy Considerations
 IANA Considerations
 ===================
 
-This document defines a new IANA registry that, for each extension header, shall define:
+This document defines a new IANA registry that, for each extension header, shall provide:
 
 - the Type codepoint;
 - the Length size in bytes.
