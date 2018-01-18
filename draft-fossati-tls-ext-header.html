@@ -306,8 +306,8 @@ address {
   <meta name="dct.creator" content="Fossati, T. and N. Mavrogiannopoulos" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-fossati-tls-ext-header-latest" />
   <meta name="dct.issued" scheme="ISO8601" content="2018-1-17" />
-  <meta name="dct.abstract" content="This document proposes a mechanism to add extension headers to TLS and DTLS." />
-  <meta name="description" content="This document proposes a mechanism to add extension headers to TLS and DTLS." />
+  <meta name="dct.abstract" content="This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the &quot;extension header indicator&quot; semantics, the other bit is reserved for future use." />
+  <meta name="description" content="This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the &quot;extension header indicator&quot; semantics, the other bit is reserved for future use." />
 
 </head>
 
@@ -347,8 +347,7 @@ address {
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>This document proposes a mechanism to add extension headers to TLS and DTLS.</p>
-<p>To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.</p>
+<p>This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -391,20 +390,30 @@ address {
 <p id="rfc.section.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#length-redefined" id="length-redefined">Length Redefined</a></h1>
 <p><a href="#RFC5246">[RFC5246]</a> requires the size of TLS record payloads to not exceed 2^14, which means that the two top level bits in the length field of the TLS record header are unused.</p>
-<p id="rfc.section.2.p.2">The proposal here is to shorten the length field to 14 bits and:</p>
+<p id="rfc.section.2.p.2">The proposal (<a href="#fig-length-redefined">Figure 1</a>) here is to shorten the length field to 14 bits and:</p>
 <p/>
 
 <ul>
   <li>Use the top bit (E) to signify the presence / absence of an extension header;</li>
   <li>Reserve the other bit (R) for future use.</li>
 </ul>
+<div id="rfc.figure.1"/>
+<div id="fig-length-redefined"/>
 <pre>
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|E|R|          Length           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
++-+-+-+-+-+-+-+-+
+|  ContentType  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|            Version            |E|R|          Length           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~                (optional) Extension header(s)                 ~
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+|         Payload (including optional MAC and padding)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p id="rfc.section.2.p.4">In the reminder, the top bit is called the "extension header indicator".</p>
+<p class="figure">Figure 1: Length redefined</p>
+<p id="rfc.section.2.p.4">Length includes any extension header that is included in this record.</p>
+<p id="rfc.section.2.p.5">(In the reminder, the top bit is called the "extension header indicator".)</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#reserved-bit-considerations" id="reserved-bit-considerations">Reserved Bit Considerations</a></h1>
 <p id="rfc.section.3.p.1">The reserved bit MUST NOT be set by a sender.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#extension-header" id="extension-header">Extension Header</a></h1>
@@ -421,7 +430,7 @@ address {
 <ul>
   <li>M has the same semantics as the extension header indicator in the regular header - i.e.: if it is asserted, another extension header follows this one;</li>
   <li>Type is a fixed length (7-bits) field that defines the way Value has to be interpreted;</li>
-  <li>Length is the minimal amount of bytes needed to encode the length of any legit Value for this Type;</li>
+  <li>Length is the length of Value in bytes.  Every extension header defines the size of its Length field as the minimal amount of bytes needed to encode the length of any legit Value for this Type;</li>
   <li>Value is the extension itself.</li>
 </ul>
 <h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#ext-header-nego" id="ext-header-nego">Negotiation</a></h1>
@@ -442,7 +451,7 @@ address {
   <li>Length: 1-byte unsigned int</li>
   <li>Value: the CID itself</li>
 </ul>
-<p id="rfc.section.4.4.p.4">Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc xtension header provides a cleaner approach that can be used with any TLS version at a reasonable cost (2 bytes per record).</p>
+<p id="rfc.section.4.4.p.4">Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc extension header provides a cleaner approach that can be used with any TLS version at a reasonable cost (2 bytes per record).</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p/>
 
