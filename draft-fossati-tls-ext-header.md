@@ -105,16 +105,24 @@ where:
 - Length is the length of Value in bytes.  Every extension header defines the size of its Length field as the minimal amount of bytes needed to encode the length of any legit Value for this Type;
 - Value is the extension itself.
 
-Negotiation {#ext-header-nego}
------------
+Extension Negotiation {#ext-header-nego}
+---------------------
 
-An extension header is allowed only if it has been negotiated via a companion TLS extension.
+The TLS extension header is allowed only if it has been negotiated via the companion TLS extension
+defined in this section.
 
 An endpoint MUST NOT send an extension header if it hasn't been successfully negotiated with the receiver.
 
 An endpoint that receives an unexpected extension header MUST abort the session.
 
 Extension headers MUST NOT be sent during the initial handshake phase.
+
+To indicate support for the TLS extension header, clients include an
+extension of type "tls_record_header_extension" to the extended client
+hello. The "tls_record_header_extension"  TLS extension is assigned the
+value of TDB-BY-IANA from the TLS ExtensionType registry. The extension
+data have zero length.  The server MUST include  a corresponding extension
+to the Server Hello for the extended record header to be negotiated.
 
 Backwards Compatibility {#ext-header-backwards-compat}
 -----------------------
