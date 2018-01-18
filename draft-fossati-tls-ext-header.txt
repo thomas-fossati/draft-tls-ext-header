@@ -9,15 +9,15 @@ Expires: July 21, 2018                                            RedHat
                                                         January 17, 2018
 
 
-                   Extension Header for TLS and DTLS
+               Record Header Extensions for TLS and DTLS
                   draft-fossati-tls-ext-header-latest
 
 Abstract
 
-   This document proposes a mechanism to add extension headers to TLS
+   This document proposes a mechanism to extend the record header in TLS
    and DTLS.  To that aim, the (D)TLS header is modified as follows: the
    length field is trimmed to 15 bits, and the length's top bit is given
-   the "extension header indicator" semantics.
+   the "record header extension indicator" semantics.
 
 Status of This Memo
 
@@ -55,14 +55,14 @@ Copyright Notice
 
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 1]
 
-Internet-Draft      Extension Header for TLS and DTLS       January 2018
+Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Length Redefined  . . . . . . . . . . . . . . . . . . . . . .   2
-   3.  Extension Header  . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Record Header Extension . . . . . . . . . . . . . . . . . . .   3
      3.1.  Format  . . . . . . . . . . . . . . . . . . . . . . . . .   3
      3.2.  Negotiation . . . . . . . . . . . . . . . . . . . . . . .   3
      3.3.  Backwards Compatibility . . . . . . . . . . . . . . . . .   4
@@ -89,10 +89,8 @@ Table of Contents
    record header is unused.
 
    The proposal (Figure 1) here is to shorten the length field to 15
-   bits and:
-
-   o  Use the top bit (E) to signify the presence / absence of an
-      extension header;
+   bits and use the top bit (E) to signify the presence / absence of a
+   record header extension.
 
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
    +-+-+-+-+-+-+-+-+
@@ -100,7 +98,7 @@ Table of Contents
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |            Version            |E|            Length           |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   ~                (optional) Extension header(s)                 ~
+   ~                (optional) Extension Header(s)                 ~
    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
    |         Payload (including optional MAC and padding)          |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -109,56 +107,58 @@ Table of Contents
 
 
 
+
+
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 2]
 
-Internet-Draft      Extension Header for TLS and DTLS       January 2018
+Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 
-   Length includes any extension header that is included in this record.
+   Length includes any record header extension that is included in this
+   record.
 
-   (In the reminder, the top bit is called the "extension header
-   indicator".)
+   In the reminder, the top bit is called the E-bit.
 
-3.  Extension Header
+3.  Record Header Extension
 
 3.1.  Format
 
-   If the extension header indicator is asserted, then an extension
-   header is appended to the regular header with the following format:
+   If the E-bit is asserted, then a record header extension is appended
+   to the regular header with the following format:
 
    +-+-+-+-+-+-+-+-+------------+------------
    |M|   Type      | Length ... | Value ... |
    +-+-+-+-+-+-+-+-+------------+-----------+
 
-   where:
+   Where:
 
-   o  M has the same semantics as the extension header indicator in the
-      regular header - i.e.: if it is asserted, another extension header
-      follows this one;
+   o  M has the same semantics as the E-bit in the regular header -
+      i.e.: if it is asserted, another extension header follows this
+      one;
 
    o  Type is a fixed length (7-bits) field that defines the way Value
       has to be interpreted;
 
-   o  Length is the length of Value in bytes.  Every extension header
-      defines the size of its Length field as the minimal amount of
-      bytes needed to encode the length of any legit Value for this
-      Type;
+   o  Length is the length of Value in bytes.  Every record header
+      extension defines the size of its Length field as the minimal
+      amount of bytes needed to encode the length of any legit Value for
+      this Type;
 
    o  Value is the extension itself.
 
 3.2.  Negotiation
 
-   An extension header is allowed only if it has been negotiated via a
-   companion TLS extension.
+   A record header extension is allowed only if it has been negotiated
+   via a companion TLS extension.
 
-   An endpoint MUST NOT send an extension header if it hasn't been
+   An endpoint MUST NOT send a record header extension if it hasn't been
    successfully negotiated with the receiver.
 
-   An endpoint that receives an unexpected extension header MUST abort
-   the session.
+   An endpoint that receives an unexpected record header extension MUST
+   abort the session.
 
-   Extension headers MUST NOT be sent during the initial handshake
-   phase.
+   Record header extensions MUST NOT be sent during the initial
+   handshake phase.
 
 
 
@@ -167,26 +167,26 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 3]
 
-Internet-Draft      Extension Header for TLS and DTLS       January 2018
+Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 
 3.3.  Backwards Compatibility
 
-   A legacy endpoint that receives an extension header will interpret it
-   as an invalid length field [RFC5246] and abort the session
-   accordingly.
+   A legacy endpoint that receives a record header extension will
+   interpret it as an invalid length field [RFC5246] and abort the
+   session accordingly.
 
    Note that this is equivalent to the behaviour of an endpoint
-   implementing this spec which receives a non-negotiated extension
-   header.
+   implementing this spec which receives a non-negotiated record header
+   extension.
 
 3.4.  Use with Connection ID
 
    A plausible use of this mechanism is in relation with the CID
    extension defined in [I-D.ietf-tls-dtls-connection-id].
 
-   In such case, the companion extension header might be defined as
-   follows:
+   In such case, the companion record header extension could be defined
+   as follows:
 
    o  Type: 0x01
 
@@ -197,14 +197,14 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
    Note that, compared to all other possible ways to express presence/
    absence of a CID field within the constrains of the current header
    format (e.g., bumping the Version field, assigning new ContentType's,
-   using an invalid length), an ad hoc extension header provides a
-   cleaner approach that can be used with any TLS version at a
+   using an invalid length), an ad hoc record header extension provides
+   a cleaner approach that can be used with any TLS version at a
    reasonable cost (2 bytes per record).
 
 4.  Security Considerations
 
    o  TODO discuss on-path active attacker - trying to modify an
-      existing extension header or insert a new one
+      existing record header extension or insert a new one
 
 5.  Privacy Considerations
 
@@ -213,8 +213,8 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
 6.  IANA Considerations
 
-   This document defines a new IANA registry that, for each extension
-   header, shall provide:
+   This document defines a new IANA registry that, for each record
+   header extension, shall provide:
 
    o  the Type codepoint;
 
@@ -223,7 +223,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 4]
 
-Internet-Draft      Extension Header for TLS and DTLS       January 2018
+Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 
    o  the Length size in bytes.
