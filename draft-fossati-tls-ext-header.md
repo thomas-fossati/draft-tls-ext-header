@@ -42,7 +42,7 @@ entity:
 
 --- abstract
 
-This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.
+This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "extension header indicator" semantics.
 
 --- middle
 
@@ -54,19 +54,19 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 Length Redefined
 ================
 
-{{RFC5246}} requires the size of TLS record payloads to not exceed 2^14, which means that the two top level bits in the length field of the TLS record header are unused.
+{{RFC5246}} requires the size of TLS record payloads to not exceed 2^14, which means that the
+first bit in the length field of the TLS record header is unused.
 
-The proposal ({{fig-length-redefined}}) here is to shorten the length field to 14 bits and:
+The proposal ({{fig-length-redefined}}) here is to shorten the length field to 15 bits and:
 
 - Use the top bit (E) to signify the presence / absence of an extension header;
-- Reserve the other bit (R) for future use.
 
 ~~~
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
 +-+-+-+-+-+-+-+-+
 |  ContentType  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|            Version            |E|R|          Length           |
+|            Version            |E|            Length           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~                (optional) Extension header(s)                 ~
 +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
@@ -78,11 +78,6 @@ The proposal ({{fig-length-redefined}}) here is to shorten the length field to 1
 Length includes any extension header that is included in this record.
 
 (In the reminder, the top bit is called the "extension header indicator".)
-
-Reserved Bit Considerations
-===========================
-
-The reserved bit MUST NOT be set by a sender.
 
 Extension Header
 =======================
