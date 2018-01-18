@@ -42,9 +42,7 @@ entity:
 
 --- abstract
 
-This document proposes a mechanism to add extension headers to TLS and DTLS.
-
-To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.
+This document proposes a mechanism to add extension headers to TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.
 
 --- middle
 
@@ -58,19 +56,28 @@ Length Redefined
 
 {{RFC5246}} requires the size of TLS record payloads to not exceed 2^14, which means that the two top level bits in the length field of the TLS record header are unused.
 
-The proposal here is to shorten the length field to 14 bits and:
+The proposal ({{fig-length-redefined}}) here is to shorten the length field to 14 bits and:
 
 - Use the top bit (E) to signify the presence / absence of an extension header;
 - Reserve the other bit (R) for future use.
 
 ~~~
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|E|R|          Length           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
++-+-+-+-+-+-+-+-+
+|  ContentType  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|            Version            |E|R|          Length           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~                (optional) Extension header(s)                 ~
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+|         Payload (including optional MAC and padding)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
+{: #fig-length-redefined title="Length redefined"}
 
-In the reminder, the top bit is called the "extension header indicator".
+Length includes any extension header that is included in this record.
+
+(In the reminder, the top bit is called the "extension header indicator".)
 
 Reserved Bit Considerations
 ===========================
@@ -95,7 +102,7 @@ where:
 
 - M has the same semantics as the extension header indicator in the regular header - i.e.: if it is asserted, another extension header follows this one;
 - Type is a fixed length (7-bits) field that defines the way Value has to be interpreted;
-- Length is the minimal amount of bytes needed to encode the length of any legit Value for this Type;
+- Length is the length of Value in bytes.  Every extension header defines the size of its Length field as the minimal amount of bytes needed to encode the length of any legit Value for this Type;
 - Value is the extension itself.
 
 Negotiation {#ext-header-nego}
@@ -127,7 +134,7 @@ In such case, the companion extension header might be defined as follows:
 - Length: 1-byte unsigned int
 - Value: the CID itself
 
-Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc xtension header provides a cleaner approach that can be used with any TLS version at a reasonable cost (2 bytes per record).
+Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc extension header provides a cleaner approach that can be used with any TLS version at a reasonable cost (2 bytes per record).
 
 Security Considerations
 =======================
