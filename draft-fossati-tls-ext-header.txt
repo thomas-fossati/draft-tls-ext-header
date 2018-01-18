@@ -239,7 +239,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
 7.  IANA Considerations
 
    This document defines a new IANA registry that, for each extension
-   header, shall define:
+   header, shall provide:
 
    o  the Type codepoint;
 
