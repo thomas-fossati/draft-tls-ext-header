@@ -44,7 +44,7 @@ entity:
 
 This document proposes a mechanism to add extension headers to TLS and DTLS.
 
-In the process, it changes the (D)TLS header in the following way: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.
+To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 14 bits, the length's top bit is given the "extension header indicator" semantics, the other bit is reserved for future use.
 
 --- middle
 
