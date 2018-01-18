@@ -1,4 +1,4 @@
-# draft-tls-ext-header
+# Extension headers for TLS and DTLS
 A straw man for extending the TLS header
 
 * [Editor's copy](https://thomas-fossati.github.io/draft-tls-ext-header/draft-fossati-tls-ext-header.html)
