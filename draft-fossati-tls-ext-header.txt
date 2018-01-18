@@ -134,7 +134,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
 
    where:
 
-   o  M has the same semantic as the extension header indicator in the
+   o  M has the same semantics as the extension header indicator in the
       regular header - i.e.: if it is asserted, another extension header
       follows this one;
 
@@ -142,7 +142,7 @@ Internet-Draft      Extension Header for TLS and DTLS       January 2018
       has to be interpreted;
 
    o  Length is the minimal amount of bytes needed to encode the length
-      of a legit Value for this Type;
+      of any legit Value for this Type;
 
    o  Value is the extension itself.
 
