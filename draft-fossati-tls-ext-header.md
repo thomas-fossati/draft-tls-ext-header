@@ -32,7 +32,9 @@ author:
 normative:
   RFC2119:
   RFC5246:
-  RFC6066:
+  I-D.ietf-tls-tls13:
+  RFC6347:
+  I-D.ietf-tls-dtls13:
 
 informative:
   I-D.ietf-tls-dtls-connection-id:
@@ -57,7 +59,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 Length Redefined
 ================
 
-{{RFC5246}} requires the size of TLS record payloads to not exceed 2^14, which means that the first bit in the length field of the TLS record header is unused.
+Both TLS ({{RFC5246}}, {{I-D.ietf-tls-tls13}}) and DTLS ({{RFC6347}}, {{I-D.ietf-tls-dtls13}}) require the size of TLS record payloads to not exceed 2^14 - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the TLS record header is, in fact, unused.
 
 The proposal ({{fig-length-redefined}}) is to shorten the length field to 15 bits and use the top bit (E) to signify the presence / absence of a {{&foo}}.
 
@@ -114,7 +116,9 @@ An endpoint that receives an unexpected {{&foo}} MUST abort the session.
 Backwards Compatibility {#ext-header-backwards-compat}
 -----------------------
 
-A legacy endpoint that receives a {{&foo}} will interpret it as an invalid length field {{RFC5246}} and abort the session accordingly.
+A legacy endpoint that receives a {{&foo}} will interpret it as an invalid length field ({{RFC5246}}, {{I-D.ietf-tls-tls13}}) and abort the session accordingly.
+
+([XXX] What is the behaviour in DTLS?  Is it that only this record is skipped or the whole security association is torn down?)
 
 Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated {{&foo}}.
 
