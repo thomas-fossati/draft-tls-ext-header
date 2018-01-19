@@ -97,7 +97,7 @@ If the E-bit is asserted, then a {{&foo}} is appended to the regular header with
 
 Where:
 
-- M has the same semantics as the E-bit in the regular header - i.e.: if it is asserted then another extension header follows this one;
+- M(ore) has the same semantics as the E-bit in the regular header - i.e.: if it is asserted then another extension header follows this one;
 - Type is a fixed length (7-bits) field that defines the way Value has to be interpreted;
 - Length is the length of Value in bytes.  Every {{&foo}} defines the size of its Length field as the minimal amount of bytes needed to encode the length of any legit Value for this Type;
 - Value is the extension itself.
@@ -107,7 +107,7 @@ Negotiation {#ext-header-nego}
 
 A {{&foo}} is allowed only if it has been negotiated via a companion TLS extension.
 
-An endpoint MUST NOT send a {{&foo}} if it hasn't been successfully negotiated with the receiver.
+An endpoint MUST NOT send a {{&foo}} that hasn't been successfully negotiated with the receiver.
 
 An endpoint that receives an unexpected {{&foo}} MUST abort the session.
 
@@ -125,9 +125,9 @@ Note that this is equivalent to the behaviour of an endpoint implementing this s
 Use with Connection ID {#ext-header-and-cid}
 ----------------------
 
-A plausible use of this mechanism is in relation with the CID extension defined in {{I-D.ietf-tls-dtls-connection-id}}.
+A plausible use of this mechanism is with the CID extension defined in {{I-D.ietf-tls-dtls-connection-id}}.
 
-In such case, the companion {{&foo}} could be defined as follows:
+In that case, the companion {{&foo}} could be defined as follows:
 
 - Type: 0x01 (i.e., CID {{&foo}});
 - Length: 1-byte unsigned int
@@ -142,24 +142,26 @@ A record carrying a CID "AB" would be formatted as in {{fig-cid-example}}.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |            Version            |1|            Length           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|0|    0x01     |      0x02     |            0x4142             |
+|0|  Type:0x01  |  Length:0x02  |        Value:0x4142           |
 +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 |         Payload (including optional MAC and padding)          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 {: #fig-cid-example title="CID header example"}
 
-Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc {{&foo}} provides a cleaner approach that can be used with any TLS version at a reasonable cost (an overhead of 2 bytes per record).
+Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType(s), using an invalid length), an ad hoc {{&foo}} provides a cleaner approach that can be used with any TLS version at a reasonable cost - an overhead of 2 bytes per record.
 
 Security Considerations {#sec-cons}
 =======================
 
-- TODO discuss on-path active attacker - trying to modify an existing {{&foo}} or insert a new one
+An on-path active attacker could try and modify an existing {{&foo}}, insert a new {{&foo}} in an existing session, or alter the result of negotiation in order to add or remove arbitrary {{&foo}}s.  Given the security properties of TLS, none of the above can succeed without being fatally noticed by the endpoints.
+
+A passive on-path attacker could potentially extrapolate useful knowledge about endpoints from the information encoded in a {{&foo}} (see also {{priv-cons}}).
 
 Privacy Considerations {#priv-cons}
 ======================
 
-- TODO discuss metadata insertion - privacy implications must be discussed on a per extension basis
+The extent and consequences of metadata leakage from endpoints to path when using a certain {{&foo}} SHALL be discussed in the document that introduces this new {{&foo}}.  If needed, the document SHALL describe the relevant risk mitigations.
 
 IANA Considerations {#iana-cons}
 ===================
