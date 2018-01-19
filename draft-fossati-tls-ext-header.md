@@ -59,7 +59,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 Length Redefined
 ================
 
-Both TLS ({{RFC5246}}, {{I-D.ietf-tls-tls13}}) and DTLS ({{RFC6347}}, {{I-D.ietf-tls-dtls13}}) require the size of TLS record payloads to not exceed 2^14 - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the TLS record header is, in fact, unused.
+Both TLS ({{RFC5246}}, {{I-D.ietf-tls-tls13}}) and DTLS ({{RFC6347}}, {{I-D.ietf-tls-dtls13}}) require the size of TLS record payloads to not exceed 2^14 bytes - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the TLS record header is, in fact, unused.
 
 The proposal ({{fig-length-redefined}}) is to shorten the length field to 15 bits and use the top bit (E) to signify the presence / absence of a {{&foo}}.
 
