@@ -154,7 +154,7 @@ A DTLS 1.2 record carrying a CID "AB" would be formatted as in {{fig-cid-example
 ~~~
 {: #fig-cid-example title="CID header example"}
 
-Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType(s), using an invalid length), an ad hoc {{&foo}} provides a cleaner approach that can be used with any TLS version at a reasonable cost - an overhead of 2 bytes per record.
+Note that, compared to all other possible ways to express presence/absence of a CID field within the constraints of the current header format (e.g., bumping the Version field, assigning new ContentType(s), using an invalid length), an ad hoc {{&foo}} provides a cleaner approach that can be used with any TLS version at a reasonable cost - an overhead of 2 bytes per record.
 
 Security Considerations {#sec-cons}
 =======================
