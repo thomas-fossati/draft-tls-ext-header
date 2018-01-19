@@ -67,14 +67,14 @@ Table of Contents
      3.2.  Negotiation . . . . . . . . . . . . . . . . . . . . . . .   3
      3.3.  Backwards Compatibility . . . . . . . . . . . . . . . . .   4
      3.4.  Use with Connection ID  . . . . . . . . . . . . . . . . .   4
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   5
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
    7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
      8.2.  Informative References  . . . . . . . . . . . . . . . . .   5
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
 
@@ -88,9 +88,9 @@ Table of Contents
    2^14, which means that the first bit in the length field of the TLS
    record header is unused.
 
-   The proposal (Figure 1) here is to shorten the length field to 15
-   bits and use the top bit (E) to signify the presence / absence of a
-   record header extension.
+   The proposal (Figure 1) is to shorten the length field to 15 bits and
+   use the top bit (E) to signify the presence / absence of a record
+   header extension.
 
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
    +-+-+-+-+-+-+-+-+
@@ -114,8 +114,8 @@ Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 2]
 Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 
-   Length includes any record header extension that is included in this
-   record.
+   Length counts the bytes of Payload and of any record header extension
+   that is added to this record.
 
    In the reminder, the top bit is called the E-bit.
 
@@ -133,7 +133,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    Where:
 
    o  M has the same semantics as the E-bit in the regular header -
-      i.e.: if it is asserted, another extension header follows this
+      i.e.: if it is asserted then another extension header follows this
       one;
 
    o  Type is a fixed length (7-bits) field that defines the way Value
@@ -188,18 +188,43 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    In such case, the companion record header extension could be defined
    as follows:
 
-   o  Type: 0x01
+   o  Type: 0x01 (i.e., CID record header extension);
 
    o  Length: 1-byte unsigned int
 
    o  Value: the CID itself
+
+   A record carrying a CID "AB" would be formatted as in Figure 2.
+
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
+   +-+-+-+-+-+-+-+-+
+   |  ContentType  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |            Version            |1|            Length           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |0|    0x01     |      0x02     |            0x4142             |
+   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+   |         Payload (including optional MAC and padding)          |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                       Figure 2: CID header example
 
    Note that, compared to all other possible ways to express presence/
    absence of a CID field within the constrains of the current header
    format (e.g., bumping the Version field, assigning new ContentType's,
    using an invalid length), an ad hoc record header extension provides
    a cleaner approach that can be used with any TLS version at a
-   reasonable cost (2 bytes per record).
+   reasonable cost (an overhead of 2 bytes per record).
+
+
+
+
+
+
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 4]
+
+Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+
 
 4.  Security Considerations
 
@@ -217,14 +242,6 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    header extension, shall provide:
 
    o  the Type codepoint;
-
-
-
-
-Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 4]
-
-Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
-
 
    o  the Length size in bytes.
 
@@ -253,6 +270,18 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 8.2.  Informative References
 
+
+
+
+
+
+
+
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 5]
+
+Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+
+
    [I-D.ietf-tls-dtls-connection-id]
               Rescorla, E., Tschofenig, H., Fossati, T., and T. Gondrom,
               "The Datagram Transport Layer Security (DTLS) Connection
@@ -277,4 +306,31 @@ Authors' Addresses
 
 
 
-Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 6]
