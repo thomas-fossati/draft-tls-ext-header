@@ -387,7 +387,7 @@ address {
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
 <p id="rfc.section.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#length-redefined" id="length-redefined">Length Redefined</a></h1>
-<p id="rfc.section.2.p.1">Both TLS (<a href="#RFC5246">[RFC5246]</a>, <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>) and DTLS (<a href="#RFC6347">[RFC6347]</a>, <a href="#I-D.ietf-tls-dtls13">[I-D.ietf-tls-dtls13]</a>) require the size of TLS record payloads to not exceed 2^14 - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the TLS record header is, in fact, unused.</p>
+<p id="rfc.section.2.p.1">Both TLS (<a href="#RFC5246">[RFC5246]</a>, <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>) and DTLS (<a href="#RFC6347">[RFC6347]</a>, <a href="#I-D.ietf-tls-dtls13">[I-D.ietf-tls-dtls13]</a>) require the size of TLS record payloads to not exceed 2^14 bytes - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the TLS record header is, in fact, unused.</p>
 <p id="rfc.section.2.p.2">The proposal (<a href="#fig-length-redefined">Figure 1</a>) is to shorten the length field to 15 bits and use the top bit (E) to signify the presence / absence of a record header extension.</p>
 <div id="rfc.figure.1"/>
 <div id="fig-length-redefined"/>
