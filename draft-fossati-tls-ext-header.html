@@ -430,7 +430,7 @@ address {
 <p id="rfc.section.3.2.p.4">Record header extensions MUST NOT be sent during the initial handshake phase.</p>
 <h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#ext-header-backwards-compat" id="ext-header-backwards-compat">Backwards Compatibility</a></h1>
 <p id="rfc.section.3.3.p.1">A legacy endpoint that receives a record header extension will interpret it as an invalid length field (<a href="#RFC5246">[RFC5246]</a>, <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>) and abort the session accordingly.</p>
-<p id="rfc.section.3.3.p.2">([XXX] What is the behaviour in DTLS?  Is it that only this record is skipped or the whole security association is torn down?)</p>
+<p id="rfc.section.3.3.p.2">(What is the behaviour in DTLS?  Is it that only this record is skipped or the whole security association is torn down?)</p>
 <p id="rfc.section.3.3.p.3">Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated record header extension.</p>
 <h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> <a href="#ext-header-and-cid" id="ext-header-and-cid">Use with Connection ID</a></h1>
 <p id="rfc.section.3.4.p.1">A plausible use of this mechanism is in relation with the CID extension defined in <a href="#I-D.ietf-tls-dtls-connection-id">[I-D.ietf-tls-dtls-connection-id]</a>.</p>
@@ -459,19 +459,19 @@ address {
 </pre>
 <p class="figure">Figure 2: CID header example</p>
 <p id="rfc.section.3.4.p.5">Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc record header extension provides a cleaner approach that can be used with any TLS version at a reasonable cost (an overhead of 2 bytes per record).</p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#sec-cons" id="sec-cons">Security Considerations</a></h1>
 <p/>
 
 <ul>
   <li>TODO discuss on-path active attacker - trying to modify an existing record header extension or insert a new one</li>
 </ul>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#privacy-considerations" id="privacy-considerations">Privacy Considerations</a></h1>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#priv-cons" id="priv-cons">Privacy Considerations</a></h1>
 <p/>
 
 <ul>
   <li>TODO discuss metadata insertion - privacy implications must be discussed on a per extension basis</li>
 </ul>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-cons" id="iana-cons">IANA Considerations</a></h1>
 <p id="rfc.section.6.p.1">This document defines a new IANA registry that, for each record header extension, shall provide:</p>
 <p/>
 

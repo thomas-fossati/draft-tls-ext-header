@@ -190,7 +190,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    interpret it as an invalid length field ([RFC5246],
    [I-D.ietf-tls-tls13]) and abort the session accordingly.
 
-   ([XXX] What is the behaviour in DTLS?  Is it that only this record is
+   (What is the behaviour in DTLS?  Is it that only this record is
    skipped or the whole security association is torn down?)
 
    Note that this is equivalent to the behaviour of an endpoint
