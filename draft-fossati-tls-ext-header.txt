@@ -75,12 +75,12 @@ Table of Contents
      3.4.  Use with Connection ID  . . . . . . . . . . . . . . . . .   4
    4.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   5
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
    7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
      8.2.  Informative References  . . . . . . . . . . . . . . . . .   6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -211,8 +211,8 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
    o  Value: the CID itself
 
-   A record carrying a CID "AB" would be formatted as in Figure 2.
-
+   A DTLS 1.2 record carrying a CID "AB" would be formatted as in
+   Figure 2.
 
 
 
@@ -230,7 +230,11 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    +-+-+-+-+-+-+-+-+
    |  ContentType  |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |            Version            |1|            Length           |
+   |            Version            |             Epoch             |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                        Sequence Number                        |
+   +                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                               |1|            Length           |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |0|  Type:0x01  |  Length:0x02  |        Value:0x4142           |
    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
@@ -250,10 +254,10 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
    An on-path active attacker could try and modify an existing record
    header extension, insert a new record header extension in an existing
-   session, or alter the result of negotiation in order to add or remove
-   arbitrary record header extensions.  Given the security properties of
-   TLS, none of the above can succeed without being fatally noticed by
-   the endpoints.
+   session, or alter the result of the negotiation in order to add or
+   remove arbitrary record header extensions.  Given the security
+   properties of TLS, none of the above can succeed without being
+   fatally noticed by the endpoints.
 
    A passive on-path attacker could potentially extrapolate useful
    knowledge about endpoints from the information encoded in a record
@@ -266,6 +270,18 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    in the document that introduces this new record header extension.  If
    needed, the document SHALL describe the relevant risk mitigations.
 
+
+
+
+
+
+
+
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 5]
+
+Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+
+
 6.  IANA Considerations
 
    This document defines a new IANA registry that, for each record
@@ -274,13 +290,6 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    o  the Type codepoint;
 
    o  the Length size in bytes.
-
-
-
-Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 5]
-
-Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
-
 
 7.  Acknowledgements
 
@@ -317,6 +326,18 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 8.2.  Informative References
 
+
+
+
+
+
+
+
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 6]
+
+Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+
+
    [I-D.ietf-tls-dtls-connection-id]
               Rescorla, E., Tschofenig, H., Fossati, T., and T. Gondrom,
               "The Datagram Transport Layer Security (DTLS) Connection
@@ -331,31 +352,10 @@ Authors' Addresses
    Email: thomas.fossati@nokia.org
 
 
-
-
-Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 6]
-
-Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
-
-
    Nikos Mavrogiannopoulos
    RedHat
 
    Email: nmav@redhat.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
