@@ -76,8 +76,8 @@ Table of Contents
    4.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   5
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
      8.2.  Informative References  . . . . . . . . . . . . . . . . .   6
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
@@ -145,7 +145,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
    Where:
 
-   o  M has the same semantics as the E-bit in the regular header -
+   o  M(ore) has the same semantics as the E-bit in the regular header -
       i.e.: if it is asserted then another extension header follows this
       one;
 
@@ -175,7 +175,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    A record header extension is allowed only if it has been negotiated
    via a companion TLS extension.
 
-   An endpoint MUST NOT send a record header extension if it hasn't been
+   An endpoint MUST NOT send a record header extension that hasn't been
    successfully negotiated with the receiver.
 
    An endpoint that receives an unexpected record header extension MUST
@@ -199,10 +199,10 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 3.4.  Use with Connection ID
 
-   A plausible use of this mechanism is in relation with the CID
-   extension defined in [I-D.ietf-tls-dtls-connection-id].
+   A plausible use of this mechanism is with the CID extension defined
+   in [I-D.ietf-tls-dtls-connection-id].
 
-   In such case, the companion record header extension could be defined
+   In that case, the companion record header extension could be defined
    as follows:
 
    o  Type: 0x01 (i.e., CID record header extension);
@@ -232,7 +232,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |            Version            |1|            Length           |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |0|    0x01     |      0x02     |            0x4142             |
+   |0|  Type:0x01  |  Length:0x02  |        Value:0x4142           |
    +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
    |         Payload (including optional MAC and padding)          |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -241,20 +241,30 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
    Note that, compared to all other possible ways to express presence/
    absence of a CID field within the constrains of the current header
-   format (e.g., bumping the Version field, assigning new ContentType's,
-   using an invalid length), an ad hoc record header extension provides
-   a cleaner approach that can be used with any TLS version at a
-   reasonable cost (an overhead of 2 bytes per record).
+   format (e.g., bumping the Version field, assigning new
+   ContentType(s), using an invalid length), an ad hoc record header
+   extension provides a cleaner approach that can be used with any TLS
+   version at a reasonable cost - an overhead of 2 bytes per record.
 
 4.  Security Considerations
 
-   o  TODO discuss on-path active attacker - trying to modify an
-      existing record header extension or insert a new one
+   An on-path active attacker could try and modify an existing record
+   header extension, insert a new record header extension in an existing
+   session, or alter the result of negotiation in order to add or remove
+   arbitrary record header extensions.  Given the security properties of
+   TLS, none of the above can succeed without being fatally noticed by
+   the endpoints.
+
+   A passive on-path attacker could potentially extrapolate useful
+   knowledge about endpoints from the information encoded in a record
+   header extension (see also Section 5).
 
 5.  Privacy Considerations
 
-   o  TODO discuss metadata insertion - privacy implications must be
-      discussed on a per extension basis
+   The extent and consequences of metadata leakage from endpoints to
+   path when using a certain record header extension SHALL be discussed
+   in the document that introduces this new record header extension.  If
+   needed, the document SHALL describe the relevant risk mitigations.
 
 6.  IANA Considerations
 
@@ -265,22 +275,18 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
    o  the Length size in bytes.
 
-7.  Acknowledgements
-
-   TODO
-
-8.  References
-
-
-
-
-
 
 
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 5]
 
 Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
+
+7.  Acknowledgements
+
+   TODO
+
+8.  References
 
 8.1.  Normative References
 
@@ -325,6 +331,13 @@ Authors' Addresses
    Email: thomas.fossati@nokia.org
 
 
+
+
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 6]
+
+Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+
+
    Nikos Mavrogiannopoulos
    RedHat
 
@@ -333,4 +346,47 @@ Authors' Addresses
 
 
 
-Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 7]
