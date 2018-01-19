@@ -1,5 +1,6 @@
 # Extension headers for TLS and DTLS
-A straw man for extending the TLS header
+
+A proposal for extending the TLS and DTLS record header.
 
 * [Editor's copy](https://thomas-fossati.github.io/draft-tls-ext-header/draft-fossati-tls-ext-header.html)
 * [Working Group Draft](NOT YET)
