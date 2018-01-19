@@ -133,14 +133,18 @@ In that case, the companion {{&foo}} could be defined as follows:
 - Length: 1-byte unsigned int
 - Value: the CID itself
 
-A record carrying a CID "AB" would be formatted as in {{fig-cid-example}}.
+A DTLS 1.2 record carrying a CID "AB" would be formatted as in {{fig-cid-example}}.
 
 ~~~
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
 +-+-+-+-+-+-+-+-+
 |  ContentType  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|            Version            |1|            Length           |
+|            Version            |             Epoch             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        Sequence Number                        |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |1|            Length           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |0|  Type:0x01  |  Length:0x02  |        Value:0x4142           |
 +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
@@ -154,7 +158,7 @@ Note that, compared to all other possible ways to express presence/absence of a 
 Security Considerations {#sec-cons}
 =======================
 
-An on-path active attacker could try and modify an existing {{&foo}}, insert a new {{&foo}} in an existing session, or alter the result of negotiation in order to add or remove arbitrary {{&foo}}s.  Given the security properties of TLS, none of the above can succeed without being fatally noticed by the endpoints.
+An on-path active attacker could try and modify an existing {{&foo}}, insert a new {{&foo}} in an existing session, or alter the result of the negotiation in order to add or remove arbitrary {{&foo}}s.  Given the security properties of TLS, none of the above can succeed without being fatally noticed by the endpoints.
 
 A passive on-path attacker could potentially extrapolate useful knowledge about endpoints from the information encoded in a {{&foo}} (see also {{priv-cons}}).
 
