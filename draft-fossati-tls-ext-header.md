@@ -23,7 +23,7 @@ author:
         ins: T. Fossati
         name: Thomas Fossati
         org: Nokia
-        email: thomas.fossati@nokia.org
+        email: thomas.fossati@nokia.com
       -
         ins: N. Mavrogiannopoulos
         name: Nikos Mavrogiannopoulos
