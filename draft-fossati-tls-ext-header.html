@@ -387,7 +387,7 @@ address {
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
 <p id="rfc.section.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#length-redefined" id="length-redefined">Length Redefined</a></h1>
-<p><a href="#RFC5246">[RFC5246]</a> requires the size of TLS record payloads to not exceed 2^14, which means that the first bit in the length field of the TLS record header is unused.</p>
+<p id="rfc.section.2.p.1">Both TLS (<a href="#RFC5246">[RFC5246]</a>, <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>) and DTLS (<a href="#RFC6347">[RFC6347]</a>, <a href="#I-D.ietf-tls-dtls13">[I-D.ietf-tls-dtls13]</a>) require the size of TLS record payloads to not exceed 2^14 - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the TLS record header is, in fact, unused.</p>
 <p id="rfc.section.2.p.2">The proposal (<a href="#fig-length-redefined">Figure 1</a>) is to shorten the length field to 15 bits and use the top bit (E) to signify the presence / absence of a record header extension.</p>
 <div id="rfc.figure.1"/>
 <div id="fig-length-redefined"/>
@@ -429,8 +429,9 @@ address {
 <p id="rfc.section.3.2.p.3">An endpoint that receives an unexpected record header extension MUST abort the session.</p>
 <p id="rfc.section.3.2.p.4">Record header extensions MUST NOT be sent during the initial handshake phase.</p>
 <h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#ext-header-backwards-compat" id="ext-header-backwards-compat">Backwards Compatibility</a></h1>
-<p id="rfc.section.3.3.p.1">A legacy endpoint that receives a record header extension will interpret it as an invalid length field <a href="#RFC5246">[RFC5246]</a> and abort the session accordingly.</p>
-<p id="rfc.section.3.3.p.2">Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated record header extension.</p>
+<p id="rfc.section.3.3.p.1">A legacy endpoint that receives a record header extension will interpret it as an invalid length field (<a href="#RFC5246">[RFC5246]</a>, <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>) and abort the session accordingly.</p>
+<p id="rfc.section.3.3.p.2">([XXX] What is the behaviour in DTLS?  Is it that only this record is skipped or the whole security association is torn down?)</p>
+<p id="rfc.section.3.3.p.3">Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated record header extension.</p>
 <h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> <a href="#ext-header-and-cid" id="ext-header-and-cid">Use with Connection ID</a></h1>
 <p id="rfc.section.3.4.p.1">A plausible use of this mechanism is in relation with the CID extension defined in <a href="#I-D.ietf-tls-dtls-connection-id">[I-D.ietf-tls-dtls-connection-id]</a>.</p>
 <p id="rfc.section.3.4.p.2">In such case, the companion record header extension could be defined as follows:</p>
@@ -486,6 +487,18 @@ address {
   <tbody>
     <tr>
       <td class="reference">
+        <b id="I-D.ietf-tls-dtls13">[I-D.ietf-tls-dtls13]</b>
+      </td>
+      <td class="top"><a>Rescorla, E.</a>, <a>Tschofenig, H.</a> and <a>N. Modadugu</a>, "<a href="http://tools.ietf.org/html/draft-ietf-tls-dtls13-22">The Datagram Transport Layer Security (DTLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-dtls13-22, November 2017.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</b>
+      </td>
+      <td class="top"><a>Rescorla, E.</a>, "<a href="http://tools.ietf.org/html/draft-ietf-tls-tls13-23">The Transport Layer Security (TLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-tls13-23, January 2018.</td>
+    </tr>
+    <tr>
+      <td class="reference">
         <b id="RFC2119">[RFC2119]</b>
       </td>
       <td class="top"><a>Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
@@ -498,9 +511,9 @@ address {
     </tr>
     <tr>
       <td class="reference">
-        <b id="RFC6066">[RFC6066]</b>
+        <b id="RFC6347">[RFC6347]</b>
       </td>
-      <td class="top"><a>Eastlake 3rd, D.</a>, "<a href="http://tools.ietf.org/html/rfc6066">Transport Layer Security (TLS) Extensions: Extension Definitions</a>", RFC 6066, DOI 10.17487/RFC6066, January 2011.</td>
+      <td class="top"><a>Rescorla, E.</a> and <a>N. Modadugu</a>, "<a href="http://tools.ietf.org/html/rfc6347">Datagram Transport Layer Security Version 1.2</a>", RFC 6347, DOI 10.17487/RFC6347, January 2012.</td>
     </tr>
   </tbody>
 </table>
