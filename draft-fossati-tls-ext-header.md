@@ -166,7 +166,7 @@ A passive on-path attacker could potentially extrapolate useful knowledge about 
 Privacy Considerations {#priv-cons}
 ======================
 
-The extent and consequences of metadata leakage from endpoints to path when using a certain {{&foo}} SHALL be discussed in the document that introduces this new {{&foo}}.  If needed, the document SHALL describe the relevant risk mitigations.
+The extent and consequences of metadata leakage from endpoints to path when using a certain {{&foo}} SHALL be assessed in the document that introduces this new {{&foo}}.  If needed, the document SHALL describe the relevant risk mitigations.
 
 IANA Considerations {#iana-cons}
 ===================
