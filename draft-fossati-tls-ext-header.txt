@@ -22,7 +22,7 @@ Abstract
    to this record.  We define the generic format of a record header
    extension and the general rules associated with its handling.  All
    the details regarding syntax, semantics and negotiation of a specific
-   record header extension are left to future documents.
+   record header extension, are left to future documents.
 
 Status of This Memo
 
@@ -154,7 +154,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
    o  Length is the length of Value in bytes.  Every record header
       extension defines the size of its Length field as the minimal
-      amount of bytes needed to encode the length of any legit Value for
+      number of bytes needed to encode the length of any legit Value for
       this Type;
 
    o  Value is the extension itself.
@@ -207,7 +207,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
    o  Type: 0x01 (i.e., CID record header extension);
 
-   o  Length: 1-byte unsigned int
+   o  Length: 1-byte unsigned integer
 
    o  Value: the CID itself
 

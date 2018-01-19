@@ -305,8 +305,8 @@ address {
   <meta name="dct.creator" content="Fossati, T. and N. Mavrogiannopoulos" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-fossati-tls-ext-header-latest" />
   <meta name="dct.issued" scheme="ISO8601" content="2018-1-17" />
-  <meta name="dct.abstract" content="This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;record header extension indicator&quot; semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  All the details regarding syntax, semantics and negotiation of a specific record header extension are left to future documents." />
-  <meta name="description" content="This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;record header extension indicator&quot; semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  All the details regarding syntax, semantics and negotiation of a specific record header extension are left to future documents." />
+  <meta name="dct.abstract" content="This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;record header extension indicator&quot; semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  All the details regarding syntax, semantics and negotiation of a specific record header extension, are left to future documents." />
+  <meta name="description" content="This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;record header extension indicator&quot; semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  All the details regarding syntax, semantics and negotiation of a specific record header extension, are left to future documents." />
 
 </head>
 
@@ -346,7 +346,7 @@ address {
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "record header extension indicator" semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  All the details regarding syntax, semantics and negotiation of a specific record header extension are left to future documents.</p>
+<p>This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "record header extension indicator" semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  All the details regarding syntax, semantics and negotiation of a specific record header extension, are left to future documents.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -420,7 +420,7 @@ address {
 <ul>
   <li>M(ore) has the same semantics as the E-bit in the regular header - i.e.: if it is asserted then another extension header follows this one;</li>
   <li>Type is a fixed length (7-bits) field that defines the way Value has to be interpreted;</li>
-  <li>Length is the length of Value in bytes.  Every record header extension defines the size of its Length field as the minimal amount of bytes needed to encode the length of any legit Value for this Type;</li>
+  <li>Length is the length of Value in bytes.  Every record header extension defines the size of its Length field as the minimal number of bytes needed to encode the length of any legit Value for this Type;</li>
   <li>Value is the extension itself.</li>
 </ul>
 <h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#ext-header-nego" id="ext-header-nego">Negotiation</a></h1>
@@ -439,7 +439,7 @@ address {
 
 <ul>
   <li>Type: 0x01 (i.e., CID record header extension);</li>
-  <li>Length: 1-byte unsigned int</li>
+  <li>Length: 1-byte unsigned integer</li>
   <li>Value: the CID itself</li>
 </ul>
 <p id="rfc.section.3.4.p.4">A DTLS 1.2 record carrying a CID "AB" would be formatted as in <a href="#fig-cid-example">Figure 2</a>.</p>
