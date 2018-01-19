@@ -48,7 +48,7 @@ entity:
 
 --- abstract
 
-This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "{{&foo}} indicator" semantics, allowing a sender to signal that one or more {{&foo}}s have been added to this record.  We define the generic format of a {{&foo}} and the general rules associated with its handling.  All the details regarding syntax, semantics and negotiation of a specific {{&foo}} are left to future documents.
+This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "{{&foo}} indicator" semantics, allowing a sender to signal that one or more {{&foo}}s have been added to this record.  We define the generic format of a {{&foo}} and the general rules associated with its handling.  All the details regarding syntax, semantics and negotiation of a specific {{&foo}}, are left to future documents.
 
 --- middle
 
@@ -100,7 +100,7 @@ Where:
 
 - M(ore) has the same semantics as the E-bit in the regular header - i.e.: if it is asserted then another extension header follows this one;
 - Type is a fixed length (7-bits) field that defines the way Value has to be interpreted;
-- Length is the length of Value in bytes.  Every {{&foo}} defines the size of its Length field as the minimal amount of bytes needed to encode the length of any legit Value for this Type;
+- Length is the length of Value in bytes.  Every {{&foo}} defines the size of its Length field as the minimal number of bytes needed to encode the length of any legit Value for this Type;
 - Value is the extension itself.
 
 Negotiation {#ext-header-nego}
@@ -131,7 +131,7 @@ A plausible use of this mechanism is with the CID extension defined in {{I-D.iet
 In that case, the companion {{&foo}} could be defined as follows:
 
 - Type: 0x01 (i.e., CID {{&foo}});
-- Length: 1-byte unsigned int
+- Length: 1-byte unsigned integer
 - Value: the CID itself
 
 A DTLS 1.2 record carrying a CID "AB" would be formatted as in {{fig-cid-example}}.
