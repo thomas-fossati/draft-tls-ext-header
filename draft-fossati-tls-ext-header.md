@@ -59,7 +59,7 @@ Length Redefined
 
 {{RFC5246}} requires the size of TLS record payloads to not exceed 2^14, which means that the first bit in the length field of the TLS record header is unused.
 
-The proposal ({{fig-length-redefined}}) here is to shorten the length field to 15 bits and use the top bit (E) to signify the presence / absence of a {{&foo}}.
+The proposal ({{fig-length-redefined}}) is to shorten the length field to 15 bits and use the top bit (E) to signify the presence / absence of a {{&foo}}.
 
 ~~~
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
@@ -75,7 +75,7 @@ The proposal ({{fig-length-redefined}}) here is to shorten the length field to 1
 ~~~
 {: #fig-length-redefined title="Length redefined"}
 
-Length includes any {{&foo}} that is included in this record.
+Length counts the bytes of Payload and of any {{&foo}} that is added to this record.
 
 In the reminder, the top bit is called the E-bit.
 
@@ -95,7 +95,7 @@ If the E-bit is asserted, then a {{&foo}} is appended to the regular header with
 
 Where:
 
-- M has the same semantics as the E-bit in the regular header - i.e.: if it is asserted, another extension header follows this one;
+- M has the same semantics as the E-bit in the regular header - i.e.: if it is asserted then another extension header follows this one;
 - Type is a fixed length (7-bits) field that defines the way Value has to be interpreted;
 - Length is the length of Value in bytes.  Every {{&foo}} defines the size of its Length field as the minimal amount of bytes needed to encode the length of any legit Value for this Type;
 - Value is the extension itself.
@@ -125,11 +125,27 @@ A plausible use of this mechanism is in relation with the CID extension defined 
 
 In such case, the companion {{&foo}} could be defined as follows:
 
-- Type: 0x01
+- Type: 0x01 (i.e., CID {{&foo}});
 - Length: 1-byte unsigned int
 - Value: the CID itself
 
-Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc {{&foo}} provides a cleaner approach that can be used with any TLS version at a reasonable cost (2 bytes per record).
+A record carrying a CID "AB" would be formatted as in {{fig-cid-example}}.
+
+~~~
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
++-+-+-+-+-+-+-+-+
+|  ContentType  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|            Version            |1|            Length           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0|    0x01     |      0x02     |            0x4142             |
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+|         Payload (including optional MAC and padding)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~
+{: #fig-cid-example title="CID header example"}
+
+Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc {{&foo}} provides a cleaner approach that can be used with any TLS version at a reasonable cost (an overhead of 2 bytes per record).
 
 Security Considerations
 =======================
