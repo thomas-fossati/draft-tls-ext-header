@@ -32,8 +32,8 @@ author:
 normative:
   RFC2119:
   RFC5246:
-  I-D.ietf-tls-tls13:
   RFC6347:
+  I-D.ietf-tls-tls13:
   I-D.ietf-tls-dtls13:
 
 informative:
@@ -118,7 +118,7 @@ Backwards Compatibility {#ext-header-backwards-compat}
 
 A legacy endpoint that receives a {{&foo}} will interpret it as an invalid length field ({{RFC5246}}, {{I-D.ietf-tls-tls13}}) and abort the session accordingly.
 
-([XXX] What is the behaviour in DTLS?  Is it that only this record is skipped or the whole security association is torn down?)
+(What is the behaviour in DTLS?  Is it that only this record is skipped or the whole security association is torn down?)
 
 Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated {{&foo}}.
 
@@ -151,17 +151,17 @@ A record carrying a CID "AB" would be formatted as in {{fig-cid-example}}.
 
 Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType's, using an invalid length), an ad hoc {{&foo}} provides a cleaner approach that can be used with any TLS version at a reasonable cost (an overhead of 2 bytes per record).
 
-Security Considerations
+Security Considerations {#sec-cons}
 =======================
 
 - TODO discuss on-path active attacker - trying to modify an existing {{&foo}} or insert a new one
 
-Privacy Considerations
+Privacy Considerations {#priv-cons}
 ======================
 
 - TODO discuss metadata insertion - privacy implications must be discussed on a per extension basis
 
-IANA Considerations
+IANA Considerations {#iana-cons}
 ===================
 
 This document defines a new IANA registry that, for each {{&foo}}, shall provide:
