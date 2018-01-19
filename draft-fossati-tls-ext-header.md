@@ -45,7 +45,7 @@ entity:
 
 --- abstract
 
-This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "{{&foo}} indicator" semantics.
+This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "{{&foo}} indicator" semantics, allowing a sender to signal that one or more {{&foo}}s have been added to this record.  We define the generic format of a {{&foo}} and the general rules associated with its handling.  All the details regarding syntax, semantics and negotiation of a specific {{&foo}} are left to future documents.
 
 --- middle
 
@@ -75,7 +75,7 @@ The proposal ({{fig-length-redefined}}) is to shorten the length field to 15 bit
 ~~~
 {: #fig-length-redefined title="Length redefined"}
 
-Length counts the bytes of Payload and of any {{&foo}} that is added to this record.
+Length counts the bytes of Payload and of all {{&foo}}s that are added to this record (possibly none).
 
 In the reminder, the top bit is called the E-bit.
 
