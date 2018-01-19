@@ -4,9 +4,9 @@
 
 TLS Working Group                                             T. Fossati
 Internet-Draft                                                     Nokia
-Intended status: Standards Track                    N. Mavrogiannopoulos
-Expires: July 21, 2018                                            RedHat
-                                                        January 17, 2018
+Updates: RFC5246, RFC6347 (if approved)             N. Mavrogiannopoulos
+Intended status: Standards Track                                  RedHat
+Expires: July 21, 2018                                  January 17, 2018
 
 
                Record Header Extensions for TLS and DTLS
