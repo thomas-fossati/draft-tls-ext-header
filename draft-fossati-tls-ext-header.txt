@@ -244,7 +244,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
                        Figure 2: CID header example
 
    Note that, compared to all other possible ways to express presence/
-   absence of a CID field within the constrains of the current header
+   absence of a CID field within the constraints of the current header
    format (e.g., bumping the Version field, assigning new
    ContentType(s), using an invalid length), an ad hoc record header
    extension provides a cleaner approach that can be used with any TLS

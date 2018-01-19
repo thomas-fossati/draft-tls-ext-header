@@ -462,7 +462,7 @@ address {
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 2: CID header example</p>
-<p id="rfc.section.3.4.p.5">Note that, compared to all other possible ways to express presence/absence of a CID field within the constrains of the current header format (e.g., bumping the Version field, assigning new ContentType(s), using an invalid length), an ad hoc record header extension provides a cleaner approach that can be used with any TLS version at a reasonable cost - an overhead of 2 bytes per record.</p>
+<p id="rfc.section.3.4.p.5">Note that, compared to all other possible ways to express presence/absence of a CID field within the constraints of the current header format (e.g., bumping the Version field, assigning new ContentType(s), using an invalid length), an ad hoc record header extension provides a cleaner approach that can be used with any TLS version at a reasonable cost - an overhead of 2 bytes per record.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#sec-cons" id="sec-cons">Security Considerations</a></h1>
 <p id="rfc.section.4.p.1">An on-path active attacker could try and modify an existing record header extension, insert a new record header extension in an existing session, or alter the result of the negotiation in order to add or remove arbitrary record header extensions.  Given the security properties of TLS, none of the above can succeed without being fatally noticed by the endpoints.</p>
 <p id="rfc.section.4.p.2">A passive on-path attacker could potentially extrapolate useful knowledge about endpoints from the information encoded in a record header extension (see also <a href="#priv-cons">Section 5</a>).</p>
