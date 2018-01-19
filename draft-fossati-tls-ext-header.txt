@@ -349,7 +349,7 @@ Authors' Addresses
    Thomas Fossati
    Nokia
 
-   Email: thomas.fossati@nokia.org
+   Email: thomas.fossati@nokia.com
 
 
    Nikos Mavrogiannopoulos
