@@ -266,7 +266,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 5.  Privacy Considerations
 
    The extent and consequences of metadata leakage from endpoints to
-   path when using a certain record header extension SHALL be discussed
+   path when using a certain record header extension SHALL be assessed
    in the document that introduces this new record header extension.  If
    needed, the document SHALL describe the relevant risk mitigations.
 
