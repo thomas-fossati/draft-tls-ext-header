@@ -20,8 +20,8 @@ Abstract
    the "record header extension indicator" semantics, allowing a sender
    to signal that one or more record header extensions have been added
    to this record.  We define the generic format of a record header
-   extension and the general rules associated with its handling.  All
-   the details regarding syntax, semantics and negotiation of a specific
+   extension and the general rules associated with its handling.  Any
+   details regarding syntax, semantics and negotiation of a specific
    record header extension, are left to future documents.
 
 Status of This Memo
