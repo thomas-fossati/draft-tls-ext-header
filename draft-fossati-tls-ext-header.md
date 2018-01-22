@@ -159,7 +159,7 @@ Note that, compared to all other possible ways to express presence/absence of a 
 Security Considerations {#sec-cons}
 =======================
 
-An on-path active attacker could try and modify an existing {{&foo}}, insert a new {{&foo}} in an existing session, or alter the result of the negotiation in order to add or remove arbitrary {{&foo}}s.  Given the security properties of TLS, none of the above can succeed without being fatally noticed by the endpoints.
+An on-path active attacker could try and modify an existing {{&foo}}, insert a new {{&foo}} in an existing session, or alter the result of the negotiation in order to add or remove arbitrary {{&foo}}s.  Given the security properties of TLS, none of the above can be tried without being fatally noticed by the endpoints.
 
 A passive on-path attacker could potentially extrapolate useful knowledge about endpoints from the information encoded in a {{&foo}} (see also {{priv-cons}}).
 
