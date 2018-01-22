@@ -256,7 +256,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    header extension, insert a new record header extension in an existing
    session, or alter the result of the negotiation in order to add or
    remove arbitrary record header extensions.  Given the security
-   properties of TLS, none of the above can succeed without being
+   properties of TLS, none of the above can be tried without being
    fatally noticed by the endpoints.
 
    A passive on-path attacker could potentially extrapolate useful
