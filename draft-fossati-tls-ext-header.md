@@ -93,7 +93,7 @@ If the E-bit is asserted, then a {{&foo}} is appended to the regular header with
 ~~~
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-----------+
-|M| Type  |      Length         | Value ... |
+|M| Type  |       Length        | Value ... |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-----------+
 ~~~
 
