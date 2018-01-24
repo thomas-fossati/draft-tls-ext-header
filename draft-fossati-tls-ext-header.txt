@@ -139,9 +139,10 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    If the E-bit is asserted, then a record header extension is appended
    to the regular header with the following format:
 
-   +-+-+-+-+-+-+-+-+------------+------------
-   |M|   Type      | Length ... | Value ... |
-   +-+-+-+-+-+-+-+-+------------+-----------+
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-----------+
+   |M| Type  |      Length         | Value ... |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-----------+
 
    Where:
 
@@ -149,18 +150,17 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
       i.e.: if it is asserted then another extension header follows this
       one;
 
-   o  Type is a fixed length (7-bits) field that defines the way Value
+   o  Type is a fixed length (4-bits) field that defines the way Value
       has to be interpreted;
 
-   o  Length is the length of Value in bytes.  Every record header
-      extension defines the size of its Length field as the minimal
-      number of bytes needed to encode the length of any legit Value for
-      this Type;
+   o  Length is the size of Value in bytes.  It uses 11 bits, therefore
+      allowing a theoretical maximum size of 2047 bytes for any record
+      header extension;
 
-   o  Value is the extension itself.
+   o  Value is the record header extension itself.
 
-
-
+   The fact that Type only allows 16 record header extension is a
+   precise design choice: the allocation pool size is severely
 
 
 
@@ -169,6 +169,9 @@ Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 3]
 
 Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
+
+   constrained so to raise the entry bar for any new record header
+   extension.
 
 3.2.  Negotiation
 
@@ -190,9 +193,6 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    interpret it as an invalid length field ([RFC5246],
    [I-D.ietf-tls-tls13]) and abort the session accordingly.
 
-   (What is the behaviour in DTLS?  Is it that only this record is
-   skipped or the whole security association is torn down?)
-
    Note that this is equivalent to the behaviour of an endpoint
    implementing this spec which receives a non-negotiated record header
    extension.
@@ -205,18 +205,18 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    In that case, the companion record header extension could be defined
    as follows:
 
-   o  Type: 0x01 (i.e., CID record header extension);
-
-   o  Length: 1-byte unsigned integer
+   o  Type: 0x0 (i.e., CID record header extension);
 
    o  Value: the CID itself
 
    A DTLS 1.2 record carrying a CID "AB" would be formatted as in
-   Figure 2.
+   Figure 2:
 
+   o  E=1
 
+   o  Type=0x0
 
-
+   o  Length=0x002
 
 
 
@@ -225,6 +225,8 @@ Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 4]
 
 Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
+
+   o  Value=0x4142
 
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
    +-+-+-+-+-+-+-+-+
@@ -236,7 +238,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    +                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                               |1|            Length           |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |0|  Type:0x01  |  Length:0x02  |        Value:0x4142           |
+   |0|  0x0  |       0x002         |            0x4142             |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |         Payload (including optional MAC and padding)          |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -275,8 +277,6 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 
 
-
-
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 5]
 
 Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
@@ -284,12 +284,8 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 6.  IANA Considerations
 
-   This document defines a new IANA registry that, for each record
-   header extension, shall provide:
-
-   o  the Type codepoint;
-
-   o  the Length size in bytes.
+   This document defines a new IANA registry that, for each new record
+   header extension, shall provide its Type code-point.
 
 7.  Acknowledgements
 
@@ -326,7 +322,11 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 8.2.  Informative References
 
-
+   [I-D.ietf-tls-dtls-connection-id]
+              Rescorla, E., Tschofenig, H., Fossati, T., and T. Gondrom,
+              "The Datagram Transport Layer Security (DTLS) Connection
+              Identifier", draft-ietf-tls-dtls-connection-id-00 (work in
+              progress), December 2017.
 
 
 
@@ -337,12 +337,6 @@ Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 6]
 
 Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
-
-   [I-D.ietf-tls-dtls-connection-id]
-              Rescorla, E., Tschofenig, H., Fossati, T., and T. Gondrom,
-              "The Datagram Transport Layer Security (DTLS) Connection
-              Identifier", draft-ietf-tls-dtls-connection-id-00 (work in
-              progress), December 2017.
 
 Authors' Addresses
 
@@ -356,6 +350,12 @@ Authors' Addresses
    RedHat
 
    Email: nmav@redhat.com
+
+
+
+
+
+
 
 
 
