@@ -91,17 +91,20 @@ Format {#ext-header-format}
 If the E-bit is asserted, then a {{&foo}} is appended to the regular header with the following format:
 
 ~~~
-+-+-+-+-+-+-+-+-+------------+------------
-|M|   Type      | Length ... | Value ... |
-+-+-+-+-+-+-+-+-+------------+-----------+
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-----------+
+|M| Type  |      Length         | Value ... |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-----------+
 ~~~
 
 Where:
 
 - M(ore) has the same semantics as the E-bit in the regular header - i.e.: if it is asserted then another extension header follows this one;
-- Type is a fixed length (7-bits) field that defines the way Value has to be interpreted;
-- Length is the length of Value in bytes.  Every {{&foo}} defines the size of its Length field as the minimal number of bytes needed to encode the length of any legit Value for this Type;
-- Value is the extension itself.
+- Type is a fixed length (4-bits) field that defines the way Value has to be interpreted;
+- Length is the size of Value in bytes.  It uses 11 bits, therefore allowing a theoretical maximum size of 2047 bytes for any {{&foo}};
+- Value is the {{&foo}} itself.
+
+The fact that Type only allows 16 {{&foo}} is a precise design choice: the allocation pool size is severely constrained so to raise the entry bar for any new {{&foo}}.
 
 Negotiation {#ext-header-nego}
 -----------
@@ -119,8 +122,6 @@ Backwards Compatibility {#ext-header-backwards-compat}
 
 A legacy endpoint that receives a {{&foo}} will interpret it as an invalid length field ({{RFC5246}}, {{I-D.ietf-tls-tls13}}) and abort the session accordingly.
 
-(What is the behaviour in DTLS?  Is it that only this record is skipped or the whole security association is torn down?)
-
 Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated {{&foo}}.
 
 Use with Connection ID {#ext-header-and-cid}
@@ -130,11 +131,15 @@ A plausible use of this mechanism is with the CID extension defined in {{I-D.iet
 
 In that case, the companion {{&foo}} could be defined as follows:
 
-- Type: 0x01 (i.e., CID {{&foo}});
-- Length: 1-byte unsigned integer
+- Type: 0x0 (i.e., CID {{&foo}});
 - Value: the CID itself
 
-A DTLS 1.2 record carrying a CID "AB" would be formatted as in {{fig-cid-example}}.
+A DTLS 1.2 record carrying a CID "AB" would be formatted as in {{fig-cid-example}}:
+
+- E=1
+- Type=0x0
+- Length=0x002
+- Value=0x4142
 
 ~~~
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
@@ -147,7 +152,7 @@ A DTLS 1.2 record carrying a CID "AB" would be formatted as in {{fig-cid-example
 +                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                               |1|            Length           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|0|  Type:0x01  |  Length:0x02  |        Value:0x4142           |
+|0|  0x0  |       0x002         |            0x4142             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |         Payload (including optional MAC and padding)          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -171,10 +176,7 @@ The extent and consequences of metadata leakage from endpoints to path when usin
 IANA Considerations {#iana-cons}
 ===================
 
-This document defines a new IANA registry that, for each {{&foo}}, shall provide:
-
-- the Type codepoint;
-- the Length size in bytes.
+This document defines a new IANA registry that, for each new {{&foo}}, shall provide its Type code-point.
 
 Acknowledgements
 ================
