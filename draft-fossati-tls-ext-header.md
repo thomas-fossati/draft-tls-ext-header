@@ -10,7 +10,7 @@ area: Security
 wg: TLS Working Group
 kw: Internet-Draft
 cat: std
-updates: RFC5246, RFC6347
+updates: 5246, 6347
 
 coding: us-ascii
 pi:    # can use array (if all yes) or hash here
