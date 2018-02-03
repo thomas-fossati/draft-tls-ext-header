@@ -4,18 +4,18 @@
 
 TLS Working Group                                             T. Fossati
 Internet-Draft                                                     Nokia
-Updates: RFC5246, RFC6347 (if approved)             N. Mavrogiannopoulos
+Updates: 5246, 6347 (if approved)                   N. Mavrogiannopoulos
 Intended status: Standards Track                                  RedHat
 Expires: July 21, 2018                                  January 17, 2018
 
 
-               Record Header Extensions for TLS and DTLS
+                   Record Header Extensions for DTLS
                   draft-fossati-tls-ext-header-latest
 
 Abstract
 
-   This document proposes a mechanism to extend the record header in TLS
-   and DTLS.  To that aim, the (D)TLS header is modified as follows: the
+   This document proposes a mechanism to extend the record header in
+   DTLS.  To that aim, the DTLS header is modified as follows: the
    length field is trimmed to 15 bits, and the length's top bit is given
    the "record header extension indicator" semantics, allowing a sender
    to signal that one or more record header extensions have been added
@@ -55,7 +55,7 @@ Copyright Notice
 
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 1]
 
-Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+Internet-Draft      Record Header Extensions for DTLS       January 2018
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -90,11 +90,10 @@ Table of Contents
 
 2.  Length Redefined
 
-   Both TLS ([RFC5246], [I-D.ietf-tls-tls13]) and DTLS ([RFC6347],
-   [I-D.ietf-tls-dtls13]) require the size of TLS record payloads to not
-   exceed 2^14 bytes - plus a small amount that accounts for compression
-   or AEAD expansion.  This means that the first bit in the length field
-   of the TLS record header is, in fact, unused.
+   DTLS ([RFC6347], [I-D.ietf-tls-dtls13]) requires the size of record
+   payloads to not exceed 2^14 bytes - plus a small amount that accounts
+   for compression or AEAD expansion.  This means that the first bit in
+   the length field of the DTLS record header is, in fact, unused.
 
    The proposal (Figure 1) is to shorten the length field to 15 bits and
    use the top bit (E) to signify the presence / absence of a record
@@ -109,16 +108,21 @@ Table of Contents
 
 
 
+
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 2]
 
-Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+Internet-Draft      Record Header Extensions for DTLS       January 2018
 
 
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+
    |  ContentType  |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |            Version            |E|            Length           |
+   |        ProtocolVersion        |             epoch             |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                        sequence_number                        |
+   +                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                               |E|            length           |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    ~             (zero or more) Extension Header(s)                ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -159,24 +163,22 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
    o  Value is the record header extension itself.
 
-   The fact that Type only allows 16 record header extension is a
-   precise design choice: the allocation pool size is severely
-
-
 
 
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 3]
 
-Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+Internet-Draft      Record Header Extensions for DTLS       January 2018
 
 
+   The fact that Type only allows 16 record header extension is a
+   precise design choice: the allocation pool size is severely
    constrained so to raise the entry bar for any new record header
    extension.
 
 3.2.  Negotiation
 
    A record header extension is allowed only if it has been negotiated
-   via a companion TLS extension.
+   via a companion DTLS extension.
 
    An endpoint MUST NOT send a record header extension that hasn't been
    successfully negotiated with the receiver.
@@ -190,8 +192,8 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 3.3.  Backwards Compatibility
 
    A legacy endpoint that receives a record header extension will
-   interpret it as an invalid length field ([RFC5246],
-   [I-D.ietf-tls-tls13]) and abort the session accordingly.
+   interpret it as an invalid length field ([RFC6347],
+   [I-D.ietf-tls-dtls13]) and abort the session accordingly.
 
    Note that this is equivalent to the behaviour of an endpoint
    implementing this spec which receives a non-negotiated record header
@@ -216,15 +218,15 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
    o  Type=0x0
 
-   o  Length=0x002
-
 
 
 
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 4]
 
-Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+Internet-Draft      Record Header Extensions for DTLS       January 2018
 
+
+   o  Length=0x002
 
    o  Value=0x4142
 
@@ -258,7 +260,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
    header extension, insert a new record header extension in an existing
    session, or alter the result of the negotiation in order to add or
    remove arbitrary record header extensions.  Given the security
-   properties of TLS, none of the above can be tried without being
+   properties of DTLS, none of the above can be tried without being
    fatally noticed by the endpoints.
 
    A passive on-path attacker could potentially extrapolate useful
@@ -275,11 +277,9 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 
 
-
-
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 5]
 
-Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+Internet-Draft      Record Header Extensions for DTLS       January 2018
 
 
 6.  IANA Considerations
@@ -335,7 +335,7 @@ Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
 
 Fossati & MavrogiannopouloExpires July 21, 2018                 [Page 6]
 
-Internet-Draft  Record Header Extensions for TLS and DTLS   January 2018
+Internet-Draft      Record Header Extensions for DTLS       January 2018
 
 
 Authors' Addresses

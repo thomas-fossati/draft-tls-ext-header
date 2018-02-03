@@ -5,7 +5,7 @@
 <head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
   <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 
-  <title>Record Header Extensions for TLS and DTLS</title>
+  <title>Record Header Extensions for DTLS</title>
 
   
 <style type="text/css">/*<![CDATA[*/
@@ -305,8 +305,8 @@ address {
   <meta name="dct.creator" content="Fossati, T. and N. Mavrogiannopoulos" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-fossati-tls-ext-header-latest" />
   <meta name="dct.issued" scheme="ISO8601" content="2018-1-17" />
-  <meta name="dct.abstract" content="This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;record header extension indicator&quot; semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  Any details regarding syntax, semantics and negotiation of a specific record header extension, are left to future documents." />
-  <meta name="description" content="This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;record header extension indicator&quot; semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  Any details regarding syntax, semantics and negotiation of a specific record header extension, are left to future documents." />
+  <meta name="dct.abstract" content="This document proposes a mechanism to extend the record header in DTLS.  To that aim, the DTLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;record header extension indicator&quot; semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  Any details regarding syntax, semantics and negotiation of a specific record header extension, are left to future documents." />
+  <meta name="description" content="This document proposes a mechanism to extend the record header in DTLS.  To that aim, the DTLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the &quot;record header extension indicator&quot; semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  Any details regarding syntax, semantics and negotiation of a specific record header extension, are left to future documents." />
 
 </head>
 
@@ -324,7 +324,7 @@ address {
   <td class="right">Nokia</td>
 </tr>
 <tr>
-  <td class="left">Updates: RFC5246, RFC6347 (if approved)</td>
+  <td class="left">Updates: 5246, 6347 (if approved)</td>
   <td class="right">N. Mavrogiannopoulos</td>
 </tr>
 <tr>
@@ -340,13 +340,13 @@ address {
     </tbody>
   </table>
 
-  <p class="title">Record Header Extensions for TLS and DTLS<br />
+  <p class="title">Record Header Extensions for DTLS<br />
   <span class="filename">draft-fossati-tls-ext-header-latest</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "record header extension indicator" semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  Any details regarding syntax, semantics and negotiation of a specific record header extension, are left to future documents.</p>
+<p>This document proposes a mechanism to extend the record header in DTLS.  To that aim, the DTLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "record header extension indicator" semantics, allowing a sender to signal that one or more record header extensions have been added to this record.  We define the generic format of a record header extension and the general rules associated with its handling.  Any details regarding syntax, semantics and negotiation of a specific record header extension, are left to future documents.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -387,16 +387,20 @@ address {
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
 <p id="rfc.section.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#length-redefined" id="length-redefined">Length Redefined</a></h1>
-<p id="rfc.section.2.p.1">Both TLS (<a href="#RFC5246">[RFC5246]</a>, <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>) and DTLS (<a href="#RFC6347">[RFC6347]</a>, <a href="#I-D.ietf-tls-dtls13">[I-D.ietf-tls-dtls13]</a>) require the size of TLS record payloads to not exceed 2^14 bytes - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the TLS record header is, in fact, unused.</p>
+<p id="rfc.section.2.p.1">DTLS (<a href="#RFC6347">[RFC6347]</a>, <a href="#I-D.ietf-tls-dtls13">[I-D.ietf-tls-dtls13]</a>) requires the size of record payloads to not exceed 2^14 bytes - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the DTLS record header is, in fact, unused.</p>
 <p id="rfc.section.2.p.2">The proposal (<a href="#fig-length-redefined">Figure 1</a>) is to shorten the length field to 15 bits and use the top bit (E) to signify the presence / absence of a record header extension.</p>
 <div id="rfc.figure.1"/>
 <div id="fig-length-redefined"/>
 <pre>
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+
 |  ContentType  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|            Version            |E|            Length           |
+|        ProtocolVersion        |             epoch             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        sequence_number                        |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |E|            length           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~             (zero or more) Extension Header(s)                ~
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -426,12 +430,12 @@ address {
 </ul>
 <p id="rfc.section.3.1.p.4">The fact that Type only allows 16 record header extension is a precise design choice: the allocation pool size is severely constrained so to raise the entry bar for any new record header extension.</p>
 <h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#ext-header-nego" id="ext-header-nego">Negotiation</a></h1>
-<p id="rfc.section.3.2.p.1">A record header extension is allowed only if it has been negotiated via a companion TLS extension.</p>
+<p id="rfc.section.3.2.p.1">A record header extension is allowed only if it has been negotiated via a companion DTLS extension.</p>
 <p id="rfc.section.3.2.p.2">An endpoint MUST NOT send a record header extension that hasn't been successfully negotiated with the receiver.</p>
 <p id="rfc.section.3.2.p.3">An endpoint that receives an unexpected record header extension MUST abort the session.</p>
 <p id="rfc.section.3.2.p.4">Record header extensions MUST NOT be sent during the initial handshake phase.</p>
 <h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#ext-header-backwards-compat" id="ext-header-backwards-compat">Backwards Compatibility</a></h1>
-<p id="rfc.section.3.3.p.1">A legacy endpoint that receives a record header extension will interpret it as an invalid length field (<a href="#RFC5246">[RFC5246]</a>, <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>) and abort the session accordingly.</p>
+<p id="rfc.section.3.3.p.1">A legacy endpoint that receives a record header extension will interpret it as an invalid length field (<a href="#RFC6347">[RFC6347]</a>, <a href="#I-D.ietf-tls-dtls13">[I-D.ietf-tls-dtls13]</a>) and abort the session accordingly.</p>
 <p id="rfc.section.3.3.p.2">Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated record header extension.</p>
 <h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> <a href="#ext-header-and-cid" id="ext-header-and-cid">Use with Connection ID</a></h1>
 <p id="rfc.section.3.4.p.1">A plausible use of this mechanism is with the CID extension defined in <a href="#I-D.ietf-tls-dtls-connection-id">[I-D.ietf-tls-dtls-connection-id]</a>.</p>
@@ -472,7 +476,7 @@ address {
 <p class="figure">Figure 2: CID header example</p>
 <p id="rfc.section.3.4.p.6">Note that, compared to all other possible ways to express presence/absence of a CID field within the constraints of the current header format (e.g., bumping the Version field, assigning new ContentType(s), using an invalid length), an ad hoc record header extension provides a cleaner approach that can be used with any TLS version at a reasonable cost - an overhead of 2 bytes per record.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#sec-cons" id="sec-cons">Security Considerations</a></h1>
-<p id="rfc.section.4.p.1">An on-path active attacker could try and modify an existing record header extension, insert a new record header extension in an existing session, or alter the result of the negotiation in order to add or remove arbitrary record header extensions.  Given the security properties of TLS, none of the above can be tried without being fatally noticed by the endpoints.</p>
+<p id="rfc.section.4.p.1">An on-path active attacker could try and modify an existing record header extension, insert a new record header extension in an existing session, or alter the result of the negotiation in order to add or remove arbitrary record header extensions.  Given the security properties of DTLS, none of the above can be tried without being fatally noticed by the endpoints.</p>
 <p id="rfc.section.4.p.2">A passive on-path attacker could potentially extrapolate useful knowledge about endpoints from the information encoded in a record header extension (see also <a href="#priv-cons">Section 5</a>).</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#priv-cons" id="priv-cons">Privacy Considerations</a></h1>
 <p id="rfc.section.5.p.1">The extent and consequences of metadata leakage from endpoints to path when using a certain record header extension SHALL be assessed in the document that introduces this new record header extension.  If needed, the document SHALL describe the relevant risk mitigations.</p>
