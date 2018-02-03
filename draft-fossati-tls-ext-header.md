@@ -1,5 +1,5 @@
 ---
-title: Record Header Extensions for TLS and DTLS
+title: Record Header Extensions for DTLS
 docname: draft-fossati-tls-ext-header-latest
 date: 2018-01-17
 
@@ -48,7 +48,7 @@ entity:
 
 --- abstract
 
-This document proposes a mechanism to extend the record header in TLS and DTLS.  To that aim, the (D)TLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "{{&foo}} indicator" semantics, allowing a sender to signal that one or more {{&foo}}s have been added to this record.  We define the generic format of a {{&foo}} and the general rules associated with its handling.  Any details regarding syntax, semantics and negotiation of a specific {{&foo}}, are left to future documents.
+This document proposes a mechanism to extend the record header in DTLS.  To that aim, the DTLS header is modified as follows: the length field is trimmed to 15 bits, and the length's top bit is given the "{{&foo}} indicator" semantics, allowing a sender to signal that one or more {{&foo}}s have been added to this record.  We define the generic format of a {{&foo}} and the general rules associated with its handling.  Any details regarding syntax, semantics and negotiation of a specific {{&foo}}, are left to future documents.
 
 --- middle
 
@@ -60,16 +60,20 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 Length Redefined
 ================
 
-Both TLS ({{RFC5246}}, {{I-D.ietf-tls-tls13}}) and DTLS ({{RFC6347}}, {{I-D.ietf-tls-dtls13}}) require the size of TLS record payloads to not exceed 2^14 bytes - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the TLS record header is, in fact, unused.
+DTLS ({{RFC6347}}, {{I-D.ietf-tls-dtls13}}) requires the size of record payloads to not exceed 2^14 bytes - plus a small amount that accounts for compression or AEAD expansion.  This means that the first bit in the length field of the DTLS record header is, in fact, unused.
 
 The proposal ({{fig-length-redefined}}) is to shorten the length field to 15 bits and use the top bit (E) to signify the presence / absence of a {{&foo}}.
 
 ~~~
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+
 |  ContentType  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|            Version            |E|            Length           |
+|        ProtocolVersion        |             epoch             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        sequence_number                        |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |E|            length           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~             (zero or more) Extension Header(s)                ~
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -109,7 +113,7 @@ The fact that Type only allows 16 {{&foo}} is a precise design choice: the alloc
 Negotiation {#ext-header-nego}
 -----------
 
-A {{&foo}} is allowed only if it has been negotiated via a companion TLS extension.
+A {{&foo}} is allowed only if it has been negotiated via a companion DTLS extension.
 
 An endpoint MUST NOT send a {{&foo}} that hasn't been successfully negotiated with the receiver.
 
@@ -120,7 +124,7 @@ An endpoint that receives an unexpected {{&foo}} MUST abort the session.
 Backwards Compatibility {#ext-header-backwards-compat}
 -----------------------
 
-A legacy endpoint that receives a {{&foo}} will interpret it as an invalid length field ({{RFC5246}}, {{I-D.ietf-tls-tls13}}) and abort the session accordingly.
+A legacy endpoint that receives a {{&foo}} will interpret it as an invalid length field ({{RFC6347}}, {{I-D.ietf-tls-dtls13}}) and abort the session accordingly.
 
 Note that this is equivalent to the behaviour of an endpoint implementing this spec which receives a non-negotiated {{&foo}}.
 
@@ -164,7 +168,7 @@ Note that, compared to all other possible ways to express presence/absence of a 
 Security Considerations {#sec-cons}
 =======================
 
-An on-path active attacker could try and modify an existing {{&foo}}, insert a new {{&foo}} in an existing session, or alter the result of the negotiation in order to add or remove arbitrary {{&foo}}s.  Given the security properties of TLS, none of the above can be tried without being fatally noticed by the endpoints.
+An on-path active attacker could try and modify an existing {{&foo}}, insert a new {{&foo}} in an existing session, or alter the result of the negotiation in order to add or remove arbitrary {{&foo}}s.  Given the security properties of DTLS, none of the above can be tried without being fatally noticed by the endpoints.
 
 A passive on-path attacker could potentially extrapolate useful knowledge about endpoints from the information encoded in a {{&foo}} (see also {{priv-cons}}).
 
