@@ -185,6 +185,11 @@ This document defines a new IANA registry that, for each new {{&foo}}, shall pro
 Acknowledgements
 ================
 
+Thanks to
+Adam Langley and
+Yoav Nir
+for comments and discussions that have helped shaping this document.
+
 This work is partially supported by the European Commission under Horizon 2020 grant agreement no. 688421 Measurement and Architecture for a Middleboxed Internet (MAMI).  This support does not imply endorsement.
 
 
