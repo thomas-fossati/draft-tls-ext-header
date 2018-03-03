@@ -3,8 +3,8 @@
 A proposal for extending the TLS and DTLS record header.
 
 * [Editor's copy](https://thomas-fossati.github.io/draft-tls-ext-header/draft-fossati-tls-ext-header.html)
-* [Working Group Draft](NOT YET)
-* [Compare Working Group Draft and Editor's copy](https://tools.ietf.org/rfcdiff?url1=TODO&url2=https://thomas-fossati.github.io/draft-tls-ext-header/draft-fossati-tls-ext-header.txt)
+* [Working Group Draft](https://tools.ietf.org/html/draft-fossati-tls-ext-header-01.html)
+* [Compare Working Group Draft and Editor's copy](https://tools.ietf.org/rfcdiff?url1=draft-fossati-tls-ext-header-01&url2=https://thomas-fossati.github.io/draft-tls-ext-header/draft-fossati-tls-ext-header.txt)
 
 ## Building the Draft
 
